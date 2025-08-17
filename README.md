@@ -1,46 +1,17 @@
-# Getting Started with Create React App
+### 멋사 중앙해커톤 3팀 FE
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+| 커밋 타입 | 예시 커밋 메시지 |
+|-----------|------------------|
+| ✨ Feat      | Feat: 로그인 기능 추가 (#12) |
+| 🐛 Fix       | Fix: 버튼 클릭 오류 수정 (#8) |
+| ✏️ Rename    | Rename: Home → HomePage 컴포넌트 이름 변경 |
+| 🔥 Remove    | Remove: 불필요한 이미지 리소스 제거 |
+| 💄 Style     | Style: 코드 포매팅 및 세미콜론 추가 |
+| 📱 Design    | Design: 메인 페이지 UI 수정 |
+| ♻️ Refactor  | Refactor: 로그인 로직 리팩토링 |
+| ✅ Test      | Test: 유닛 테스트 코드 추가 |
+| 📝 Docs      | Docs: README 커밋 메시지 규칙 추가 |
+| 🔧 Chore     | Chore: .gitignore 파일 수정 |
+| ⚡️ Perf      | Perf: 이미지 로딩 성능 개선 |
