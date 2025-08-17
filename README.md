@@ -15,3 +15,4 @@
 | 📝 Docs      | Docs: README 커밋 메시지 규칙 추가 |
 | 🔧 Chore     | Chore: .gitignore 파일 수정 |
 | ⚡️ Perf      | Perf: 이미지 로딩 성능 개선 |
+| ⚙️ Setting  | 빌드 및 패키지 등 프로젝트 설정  |
