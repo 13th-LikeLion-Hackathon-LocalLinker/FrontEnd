@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "서비스 명",
+  "name": "서비스 전체 이름",
   "icons": [
     {
       "src": "favicon.ico",
