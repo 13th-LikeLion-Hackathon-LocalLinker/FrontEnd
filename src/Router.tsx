@@ -1,11 +1,28 @@
 import React from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { Outlet, createBrowserRouter } from 'react-router-dom';
+import Layout from './layouts/layout';
 import MainPage from './pages/Main/MainPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainPage />,
+    element: (
+      <>
+        <Outlet />
+      </>
+    ),
+    children: [
+      {
+        index: true,
+        element: (
+          <>
+            <Layout showHeader showFooter headerProps={{ type: 'main' }}>
+              <MainPage />
+            </Layout>
+          </>
+        ),
+      },
+    ],
   },
 ]);
 
