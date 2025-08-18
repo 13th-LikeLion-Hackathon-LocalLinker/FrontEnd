@@ -1,0 +1,5 @@
+// tsconfig.worker.json
+{
+  "extends": "./tsconfig.json",
+  "include": ["public/service-worker.ts"]
+}

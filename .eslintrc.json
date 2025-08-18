@@ -34,6 +34,15 @@
       "warn",
       { "argsIgnorePattern": "^_" }
     ],
+
     "react/react-in-jsx-scope": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["public/service-worker.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.worker.json"
+      }
+    }
+  ]
 }
