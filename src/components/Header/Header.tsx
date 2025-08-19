@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as S from './Header.styles';
 import type { HeaderProps } from './Header.types';
 import menu from '../../assets/icons/menu.svg';
@@ -7,7 +7,10 @@ import { ReactComponent as ArrowLeft } from '../../assets/icons/arrow_left.svg';
 
 // TODO text에 따른 헤더 텍스트 변경
 
-function Header({ type }: HeaderProps) {
+function Header({
+  type,
+  onMenuClick,
+}: HeaderProps & { onMenuClick?: () => void }) {
   return (
     <>
       {type === 'main' && (
@@ -18,7 +21,7 @@ function Header({ type }: HeaderProps) {
               <ArrowDropdown style={{ color: 'white' }} />
             </S.MainIcon>
           </S.MainTextWrapper>
-          <S.MenuIcon>
+          <S.MenuIcon onClick={onMenuClick}>
             <img src={menu} alt="" />
           </S.MenuIcon>
         </S.HeaderMain>
@@ -31,7 +34,7 @@ function Header({ type }: HeaderProps) {
             </S.MainIcon>
             <S.TitleText>상세 페이지</S.TitleText>
           </S.DetailTextWrapper>
-          <S.MenuIcon>
+          <S.MenuIcon onClick={onMenuClick}>
             <img src={menu} alt="" />
           </S.MenuIcon>
         </S.HeaderDetail>
