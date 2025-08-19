@@ -3,6 +3,7 @@
 ### Branch
 - 작업 내용에 따른 이슈 생성 후 해당 브랜치를 사용한다.
 - commit에 대한 prefix 규칙을 준수하도록 한다.
+- pr은 dev 브랜치에 진행
 
   
 ### Commit Prefix
