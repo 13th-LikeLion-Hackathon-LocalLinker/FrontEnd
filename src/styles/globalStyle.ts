@@ -47,8 +47,9 @@ const globalStyles = css`
     height: 100%;
   }
   body {
+    margin: 0;
     line-height: 1;
-    background: #e6e6e6;
+    background: #fff;
   }
   ol,
   ul {

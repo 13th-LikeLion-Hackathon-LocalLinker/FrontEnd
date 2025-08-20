@@ -1,84 +1,64 @@
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 
-const HeaderContainer = css`
-  width: 100%;
-  max-width: 450px;
-  position: fixed;
-  height: 56px;
+/** 공통 셸: 375×56 고정, 하단 패딩 16px, sticky */
+const HeaderShell = styled.header`
+  position: sticky;
   top: 0;
   z-index: 1000;
+
+  width: 375px;
+  height: 56px;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  padding: 0 16px 16px; /* 하단 패딩 16px */
+  display: flex;
+
+  background-color: ${({ theme }) => theme.colors.primary.base};
 `;
 
-const HeaderMain = styled.div`
-  ${HeaderContainer}
-  display: flex;
-  background-color: ${({ theme }) => theme.colors.primary.base};
-  padding: 16px 18px;
+export const HeaderMain = styled(HeaderShell)`
   justify-content: space-between;
   align-items: flex-end;
 `;
 
-const MainTextWrapper = styled.div`
+export const HeaderDetail = styled(HeaderShell)`
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const HeaderChat = styled(HeaderShell)`
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+export const MainTextWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
 `;
 
-const MainIcon = styled.div`
-  width: 24px;
-  height: 24px;
-`;
-
-const MenuIcon = styled.div`
-  width: 24px;
-  height: 24px;
-`;
-
-const HeaderDetail = styled.div`
-  ${HeaderContainer}
-  display: flex;
-  background-color: ${({ theme }) => theme.colors.primary.base};
-  padding: 12px 16px;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const DetailTextWrapper = styled.div`
+export const DetailTextWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
 `;
 
-const TitleText = styled.div`
-  color: white;
+export const TitleText = styled.div`
+  color: #fff;
   font-size: 20px;
   font-weight: 700;
 `;
 
-const HeaderChat = styled.div`
-  ${HeaderContainer}
+export const MainIcon = styled.div`
+  width: 24px;
+  height: 24px;
   display: flex;
-  background-color: ${({ theme }) => theme.colors.primary.base};
-  padding: 12px 16px;
-  justify-content: flex-start;
   align-items: center;
 `;
 
-const ChatTitleText = styled.div`
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
+export const MenuIcon = styled.div`
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 `;
-
-export {
-  HeaderMain,
-  HeaderDetail,
-  HeaderChat,
-  TitleText,
-  ChatTitleText,
-  MenuIcon,
-  MainTextWrapper,
-  MainIcon,
-  DetailTextWrapper,
-};

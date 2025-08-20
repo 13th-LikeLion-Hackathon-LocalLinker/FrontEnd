@@ -1,27 +1,24 @@
 import styled from '@emotion/styled';
 
-const FooterWrapper = styled.div`
-  width: 100%;
+export const FooterWrapper = styled.footer`
+  width: 375px;
   height: 140px;
-  flex-shrink: 0;
-
+  flex: 0 0 140px;
   display: flex;
   flex-direction: column;
-  padding: 44px 133px 39px 20px;
+  justify-content: center;
   gap: 8px;
-  z-index: 1000;
+  padding: 20px 16px 20px 16px;
+  background: #ffff;
   color: ${({ theme }) => theme.colors.outline.base};
 `;
 
-const ServiceName = styled.div`
+export const ServiceName = styled.div`
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
 `;
 
-const FooterText = styled.div`
+export const FooterText = styled.div`
   font-size: 12px;
-  font-weight: 400;
   line-height: 16px;
 `;
-
-export { FooterWrapper, ServiceName, FooterText };

@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as S from './Header.styles';
 import type { HeaderProps } from './Header.types';
 import menu from '../../assets/icons/menu.svg';
 import { ReactComponent as ArrowDropdown } from '../../assets/icons/dropdown_arrow.svg';
 import { ReactComponent as ArrowLeft } from '../../assets/icons/arrow_left.svg';
 
-// TODO text에 따른 헤더 텍스트 변경
-
 function Header({
-  type,
+  type = 'main',
   onMenuClick,
 }: HeaderProps & { onMenuClick?: () => void }) {
   return (

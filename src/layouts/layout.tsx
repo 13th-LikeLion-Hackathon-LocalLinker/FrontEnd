@@ -12,15 +12,16 @@ function Layout({
   headerProps,
 }: LayoutProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const handleDrawer = () => {
-    setIsOpen(!isOpen);
-  };
+  const handleDrawer = () => setIsOpen((v) => !v);
+
   return (
     <S.PageWrapper>
-      {showHeader && <Header {...headerProps} onMenuClick={handleDrawer} />}
-      <S.Content>{children}</S.Content>
-      <Drawer isOpen={isOpen} onClose={handleDrawer} />
-      {showFooter && <Footer />}
+      <S.Frame>
+        {showHeader && <Header {...headerProps} onMenuClick={handleDrawer} />}
+        <S.Content>{children}</S.Content>
+        <Drawer isOpen={isOpen} onClose={handleDrawer} />
+        {showFooter && <Footer />}
+      </S.Frame>
     </S.PageWrapper>
   );
 }
