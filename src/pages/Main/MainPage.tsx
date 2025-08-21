@@ -11,6 +11,7 @@ import NoticeCard from '../../components/Card/NoticeCard';
 import { latest, dueSoon } from '../../data/notices';
 import FabChat from '../../components/FabChat';
 
+//...
 export default function MainPage() {
   return (
     <S.Stage>

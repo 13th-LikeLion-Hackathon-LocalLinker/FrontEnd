@@ -1,0 +1,36 @@
+* [33m62402e8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mFeat/#6[m[33m, [m[1;31morigin/Feat/#6[m[33m)[m [#6]Design: 컴포넌트 분리
+* [33mdfe98e7[m [#6]Feat: MainPage 구성
+*   [33m9c1edd7[m Merge pull request #5 from 13th-LikeLion-Hackathon-LocalLinker/Feat/#4
+[32m|[m[33m\[m  
+[32m|[m * [33md34d243[m[33m ([m[1;31morigin/Feat/#4[m[33m)[m [#4] Feat: Drawer에 따른 라우팅 및 온보딩 라우터 설정
+[32m|[m * [33mc6c06da[m [#4] Feat: Drawer 구현
+[32m|[m * [33mbcf83bd[m [#4] Feat: 레이아웃 구현
+[32m|[m * [33m8c9b016[m [#4] Feat: Footer 구현
+[32m|[m * [33m068cda5[m [#4] Feat: Header UI 구현
+[32m|[m * [33m081ca7a[m [#4] Feat: assets 추가
+[32m|[m * [33m7cf2e2a[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;31morigin/Feat/#8[m[33m, [m[1;32mmain[m[33m, [m[1;32mFeat/#8[m[33m)[m Update README.md
+[32m|[m *   [33m987dd12[m Merge pull request #3 from 13th-LikeLion-Hackathon-LocalLinker/dev
+[32m|[m [34m|[m[32m\[m  
+[32m|[m [34m|[m[32m/[m  
+[32m|[m[32m/[m[34m|[m   
+* [34m|[m   [33m4248c26[m Merge pull request #2 from 13th-LikeLion-Hackathon-LocalLinker/Setting/#1
+[36m|[m[1;31m\[m [34m\[m  
+[36m|[m * [34m|[m [33ma85cb11[m[33m ([m[1;31morigin/Setting/#1[m[33m)[m [#1] Chore: .gitkeep 삭제
+[36m|[m * [34m|[m [33mdb5276c[m [#1] Setting: 전역 스타일 설정
+[36m|[m * [34m|[m [33ma7f67bb[m [#1] Setting: emotion, styled-component 의존성 추가
+[36m|[m * [34m|[m [33m8fd72e1[m [#1] Setting: PWA 서비스 워커 등록
+[36m|[m * [34m|[m [33m6c94294[m [#1] Setting: 모바일 크기로 기본 크기 설정
+[36m|[m * [34m|[m [33m43ecc5e[m [#1] Setting: Router 설정
+[36m|[m * [34m|[m [33m9620385[m [#1] Chore: eslint react-hooks 규칙 제거
+[36m|[m * [34m|[m [33ma00efdc[m [#1] Setting: axios 의존성 추
+[36m|[m * [34m|[m [33mb2eb76c[m [#1] ⚙️ Setting: 디렉토리 구조 설정
+[36m|[m * [34m|[m [33m0b27614[m [#1] Setting: eslint 및 프리티어 설정
+[36m|[m [1;31m|[m * [33m09a99ff[m [Setting]: pr 템플릿 추가
+[36m|[m [1;31m|[m[36m/[m  
+[36m|[m[36m/[m[1;31m|[m   
+* [1;31m|[m [33md954a92[m Update README.md
+[1;31m|[m[1;31m/[m  
+* [33m2ec10a3[m Update README.md
+* [33m0656b39[m Update README.md
+* [33mbf9fc3b[m Update issue templates
+* [33m3ae41e5[m Initialize project using Create React App
