@@ -17,6 +17,7 @@ const PER_PAGE = 6;
 const Wrap = styled.div`
   padding: 12px 16px 24px;
 `;
+
 const CountBar = styled.div`
   display: flex;
   align-items: center;

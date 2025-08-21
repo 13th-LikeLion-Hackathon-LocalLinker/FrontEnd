@@ -1,4 +1,3 @@
-// src/types/category.ts
 export const CATEGORY_CODES = [
   'ADMINISTRATION',
   'MEDICAL',

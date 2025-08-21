@@ -15,7 +15,6 @@ export const CountBar = styled.div`
 
 export const List = styled.div`
   display: grid;
-  grid-auto-rows: min-content;
   gap: 10px;
 `;
 
