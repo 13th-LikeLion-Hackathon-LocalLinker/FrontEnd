@@ -41,7 +41,7 @@ export const MainTextWrapper = styled.div`
 export const DetailTextWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 `;
 
 export const TitleText = styled.div`

@@ -27,12 +27,9 @@ export const MetaRow = styled(Inner)`
 `;
 
 export const MetaLeft = styled.div`
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  column-gap: 8px;
-  font-size: 13px;
-  line-height: 14px;
-  color: #6b7280;
+  gap: 8px;
 `;
 
 export const IconButton = styled.button.attrs({ type: 'button' })`
@@ -92,6 +89,11 @@ export const BottomRow = styled(Inner)`
   column-gap: 8px;
 `;
 
+export const CategoryText = styled.span`
+  color: #616462;
+  font-weight: 700;
+  font-size: 13px;
+`;
 /* 부서 */
 export const Dept = styled.span`
   font-size: 10px;
@@ -111,4 +113,24 @@ export const Period = styled.span`
   color: #374151;
   flex: 0 0 auto;
   white-space: nowrap;
+`;
+const Badge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 4px;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 400;
+`;
+
+// tag 배지
+export const TagBadge = styled(Badge)`
+  background: #F4FBF5;
+  color: #75A57D;
+`;
+
+// 기간제 배지
+export const LimitedBadge = styled(Badge)`
+  background: #F8F9F8;
+  color: #616462;
 `;

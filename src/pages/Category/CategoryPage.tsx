@@ -1,4 +1,3 @@
-// src/pages/Category/CategoryPage.tsx
 import React, { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
@@ -6,23 +5,12 @@ import Layout from '../../layouts/layout';
 import NoticeCard from '../../components/Card/NoticeCard';
 import type { Notice } from '../../data/notices';
 import { latest, dueSoon } from '../../data/notices';
-
-type CatKey =
-  | 'ADMINISTRATION'
-  | 'MEDICAL'
-  | 'HOUSING'
-  | 'EMPLOYMENT'
-  | 'EDUCATION'
-  | 'LIFE_SUPPORT';
-
-const LABELS: Record<CatKey, string> = {
-  ADMINISTRATION: '행정',
-  MEDICAL: '의료',
-  HOUSING: '주거',
-  EMPLOYMENT: '취업/근로',
-  EDUCATION: '교육',
-  LIFE_SUPPORT: '생활 지원',
-};
+import {
+  CategoryCode,
+  CATEGORY_LABELS,
+  DEFAULT_CATEGORY,
+  isCategoryCode,
+} from '../../types/category';
 
 const PER_PAGE = 6;
 
@@ -66,8 +54,8 @@ const Pager = styled.nav`
   }
 `;
 
-function useCategoryData(cat: CatKey): Notice[] {
-  const map: Record<CatKey, Notice[]> = {
+function useCategoryData(cat: CategoryCode): Notice[] {
+  const map: Record<CategoryCode, Notice[]> = {
     ADMINISTRATION: latest,
     MEDICAL: dueSoon,
     HOUSING: latest,
@@ -80,10 +68,11 @@ function useCategoryData(cat: CatKey): Notice[] {
 
 export default function CategoryPage() {
   const [sp, setSp] = useSearchParams();
-  const cat = (sp.get('category') as CatKey) || 'ADMINISTRATION';
-  const page = Math.max(1, parseInt(sp.get('page') || '1', 10));
 
-  const headerTitle = LABELS[cat] || '목록';
+  const raw = sp.get('category');
+  const cat: CategoryCode = isCategoryCode(raw) ? raw : DEFAULT_CATEGORY;
+
+  const page = Math.max(1, parseInt(sp.get('page') || '1', 10));
   const all = useCategoryData(cat);
   const total = all.length;
   const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
@@ -99,7 +88,11 @@ export default function CategoryPage() {
   };
 
   return (
-    <Layout showHeader showFooter headerProps={{ type: 'detail', text: headerTitle }}>
+    <Layout
+      showHeader
+      showFooter
+      headerProps={{ type: 'detail', text: CATEGORY_LABELS[cat] }}
+    >
       <Wrap>
         <CountBar>
           <span>전체</span>
@@ -128,7 +121,10 @@ export default function CategoryPage() {
               </button>
             );
           })}
-          <button onClick={() => setPage(page + 1)} disabled={page >= totalPages}>
+          <button
+            onClick={() => setPage(page + 1)}
+            disabled={page >= totalPages}
+          >
             {'>'}
           </button>
         </Pager>

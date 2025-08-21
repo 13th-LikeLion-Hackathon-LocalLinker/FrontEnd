@@ -1,3 +1,4 @@
+// src/components/NoticeCard/NoticeCard.tsx
 import React from 'react';
 import type { Notice } from '../../data/notices';
 import bookmarket from '../../assets/icons/bookmarket.svg';
@@ -5,14 +6,12 @@ import bookmarketFill from '../../assets/icons/bookmark_fill.svg';
 import * as S from './NoticeCard.styles';
 
 type NoticeCardProps = Notice & {
-  /** (선택) 외부에서 북마크 상태 제어 */
   bookmarked?: boolean;
-  /** (선택) 내부 상태용 초기값 */
   defaultBookmarked?: boolean;
-  /** (선택) 토글 콜백 */
   onToggleBookmark?: (next: boolean) => void;
   onClick?: (e: React.MouseEvent) => void;
   className?: string;
+  isPeriodLimited?: boolean;
 };
 
 export default function NoticeCard(props: NoticeCardProps) {
@@ -22,6 +21,7 @@ export default function NoticeCard(props: NoticeCardProps) {
     onToggleBookmark,
     onClick,
     className,
+    isPeriodLimited,
     ...n
   } = props;
 
@@ -36,32 +36,28 @@ export default function NoticeCard(props: NoticeCardProps) {
     onToggleBookmark?.(next);
   };
 
+  const hasTag = !!n.type && n.type.trim().length > 0;
+
   return (
-    <S.Card
-      role="button"
-      aria-label={n.title}
-      onClick={onClick}
-      className={className}
-    >
-      {/* 메타 + 북마크 */}
+    <S.Card role="button" aria-label={n.title} onClick={onClick} className={className}>
       <S.MetaRow>
         <S.MetaLeft>
-          <span>{n.category} |</span>
-          <span>{n.type}</span>
+          <S.CategoryText>{n.category}</S.CategoryText>
+          {hasTag && <S.TagBadge>{n.type}</S.TagBadge>}
+          {isPeriodLimited && <S.LimitedBadge>기간제</S.LimitedBadge>}
         </S.MetaLeft>
+
         <S.IconButton onClick={handleBookmarkClick}>
           <S.BookmarkImg src={bookmarked ? bookmarketFill : bookmarket} />
         </S.IconButton>
       </S.MetaRow>
 
-      {/* 제목 */}
       <S.TitleBox>
         <S.Title>{n.title}</S.Title>
       </S.TitleBox>
 
-      {/* 부서,신청기간 */}
       <S.BottomRow>
-        <S.Dept>{n.dept}</S.Dept>
+        <S.Dept>대상 | {n.dept}</S.Dept>
         <S.Period>신청기간 | {n.period}</S.Period>
       </S.BottomRow>
     </S.Card>
