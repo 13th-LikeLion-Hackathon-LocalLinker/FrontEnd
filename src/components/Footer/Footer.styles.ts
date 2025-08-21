@@ -9,7 +9,7 @@ export const FooterWrapper = styled.footer`
   justify-content: center;
   gap: 8px;
   padding: 20px 16px 20px 16px;
-  background: #ffff;
+  background: #ffffff;
   color: ${({ theme }) => theme.colors.outline.base};
 `;
 
