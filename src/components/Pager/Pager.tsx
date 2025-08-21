@@ -1,9 +1,10 @@
-// src/components/Pager/Pager.tsx
 import React from 'react';
 import * as S from './Pager.styles';
+import arrowLeft from '../../assets/icons/arrow_left.svg';
+import arrowRight from '../../assets/icons/arrow_right.svg';
 
 type PagerProps = {
-  page: number;                 // 1-based
+  page: number;            
   totalPages: number;
   onChange: (page: number) => void;
 };
@@ -13,19 +14,34 @@ export default function Pager({ page, totalPages, onChange }: PagerProps) {
 
   return (
     <S.Pager aria-label="pagination">
-      <S.PageButton onClick={() => onChange(page - 1)} disabled={page <= 1}>
-        {'<'}
-      </S.PageButton>
+      <S.IconButton
+        aria-label="previous page"
+        onClick={() => onChange(page - 1)}
+        disabled={page <= 1}
+      >
+        <img src={arrowLeft} alt="" />
+      </S.IconButton>
 
-      {pages.map((p) => (
-        <S.PageButton key={p} active={p === page} onClick={() => onChange(p)}>
-          {p}
-        </S.PageButton>
-      ))}
+      <S.PageList>
+        {pages.map((p) => (
+          <S.PageItem
+            key={p}
+            active={p === page}
+            onClick={() => onChange(p)}
+            aria-current={p === page ? 'page' : undefined}
+          >
+            {p}
+          </S.PageItem>
+        ))}
+      </S.PageList>
 
-      <S.PageButton onClick={() => onChange(page + 1)} disabled={page >= totalPages}>
-        {'>'}
-      </S.PageButton>
+      <S.IconButton
+        aria-label="next page"
+        onClick={() => onChange(page + 1)}
+        disabled={page >= totalPages}
+      >
+        <img src={arrowRight} alt="" />
+      </S.IconButton>
     </S.Pager>
   );
 }

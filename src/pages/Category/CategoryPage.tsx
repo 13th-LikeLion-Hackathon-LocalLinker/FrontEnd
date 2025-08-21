@@ -1,8 +1,9 @@
+// src/pages/Category/CategoryPage.tsx
 import React, { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import styled from '@emotion/styled';
 import Layout from '../../layouts/layout';
 import NoticeCard from '../../components/Card/NoticeCard';
+import Pager from '../../components/Pager/Pager';
 import type { Notice } from '../../data/notices';
 import { latest, dueSoon } from '../../data/notices';
 import {
@@ -11,49 +12,9 @@ import {
   DEFAULT_CATEGORY,
   isCategoryCode,
 } from '../../types/category';
+import * as L from './CategoryPage.styles';
 
 const PER_PAGE = 6;
-
-const Wrap = styled.div`
-  padding: 12px 16px 24px;
-`;
-
-const CountBar = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #6b7280;
-  font-size: 12px;
-  margin-bottom: 12px;
-`;
-const List = styled.div`
-  display: grid;
-  gap: 10px;
-`;
-const Pager = styled.nav`
-  margin: 20px 0 8px;
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  button {
-    min-width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    border: 1px solid #e5e7eb;
-    background: #fff;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  .active {
-    background: #0fb050;
-    color: #fff;
-    border-color: #0fb050;
-  }
-  button:disabled {
-    opacity: 0.4;
-    cursor: default;
-  }
-`;
 
 function useCategoryData(cat: CategoryCode): Notice[] {
   const map: Record<CategoryCode, Notice[]> = {
@@ -85,7 +46,13 @@ export default function CategoryPage() {
 
   const setPage = (p: number) => {
     const np = Math.min(Math.max(1, p), totalPages);
-    setSp({ category: cat, page: String(np) });
+    // 다른 쿼리스트링 보존
+    setSp(prev => {
+      const next = new URLSearchParams(prev);
+      next.set('category', cat);
+      next.set('page', String(np));
+      return next;
+    });
   };
 
   return (
@@ -94,42 +61,20 @@ export default function CategoryPage() {
       showFooter
       headerProps={{ type: 'detail', text: CATEGORY_LABELS[cat] }}
     >
-      <Wrap>
-        <CountBar>
+      <L.Wrap>
+        <L.CountBar>
           <span>전체</span>
           <b style={{ color: '#111827' }}>{total}건</b>
-        </CountBar>
+        </L.CountBar>
 
-        <List>
+        <L.List>
           {data.map((n) => (
             <NoticeCard key={n.id} {...n} />
           ))}
-        </List>
+        </L.List>
 
-        <Pager aria-label="pagination">
-          <button onClick={() => setPage(page - 1)} disabled={page <= 1}>
-            {'<'}
-          </button>
-          {Array.from({ length: totalPages }).map((_, i) => {
-            const num = i + 1;
-            return (
-              <button
-                key={num}
-                className={num === page ? 'active' : undefined}
-                onClick={() => setPage(num)}
-              >
-                {num}
-              </button>
-            );
-          })}
-          <button
-            onClick={() => setPage(page + 1)}
-            disabled={page >= totalPages}
-          >
-            {'>'}
-          </button>
-        </Pager>
-      </Wrap>
+        <Pager page={page} totalPages={totalPages} onChange={setPage} />
+      </L.Wrap>
     </Layout>
   );
 }

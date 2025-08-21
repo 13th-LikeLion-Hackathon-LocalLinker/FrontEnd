@@ -24,14 +24,14 @@ export default function MainPage() {
 
           <SectionHeader title="최신 공고" />
           <SectionList>
-            {latest.map((n) => (
+            {latest.slice(0, 3).map((n) => (
               <NoticeCard key={n.id} {...n} />
             ))}
           </SectionList>
 
           <SectionHeader title="마감 임박 공고" />
           <SectionList>
-            {dueSoon.map((n) => (
+            {dueSoon.slice(0, 3).map((n) => (
               <NoticeCard key={n.id} {...n} />
             ))}
           </SectionList>

@@ -1,8 +1,8 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<mask id="mask0_350_73" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="8" y="5" width="9" height="15">
-<path d="M8.51653 6.3771L9.7291 5.16567L16.3337 11.768C16.4401 11.8737 16.5246 11.9995 16.5823 12.1381C16.6399 12.2767 16.6696 12.4253 16.6696 12.5754C16.6696 12.7255 16.6399 12.8741 16.5823 13.0126C16.5246 13.1512 16.4401 13.277 16.3337 13.3828L9.7291 19.9885L8.51767 18.7771L14.7165 12.5771L8.51653 6.3771Z" fill="black" style="fill:black;fill-opacity:1;"/>
+<mask id="mask0_178_301" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+<rect width="24" height="24" fill="#D9D9D9" style="fill:#D9D9D9;fill:color(display-p3 0.8510 0.8510 0.8510);fill-opacity:1;"/>
 </mask>
-<g mask="url(#mask0_350_73)">
-<rect x="24" y="24" width="24" height="24" transform="rotate(-180 24 24)" fill="#0A0B0D" style="fill:#0A0B0D;fill:color(display-p3 0.0383 0.0441 0.0527);fill-opacity:1;"/>
+<g mask="url(#mask0_178_301)">
+<path d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2L18.025 12L8.025 22Z" fill="#1C1B1F" style="fill:#1C1B1F;fill:color(display-p3 0.1098 0.1059 0.1216);fill-opacity:1;"/>
 </g>
 </svg>

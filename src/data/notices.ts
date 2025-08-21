@@ -159,6 +159,30 @@ const apiDataMock: BackendNotice[] = [
     tags: null,
     isPeriodLimited: false,
   },
+  {
+    id: 7,
+    title: '외국인 등록 및 체류 관련 행정 서비스',
+    category: 'ADMINISTRATION',
+    organization: '법무부 출입국·외국인정책본부',
+    sourceUrl: 'https://www.immigration.go.kr/immigration/1569/subview.do',
+    applyStartAt: null,
+    applyEndAt: null,
+    eligibility: '국내 체류 외국인',
+    tags: null,
+    isPeriodLimited: false,
+  },
+  {
+    id: 8,
+    title: '외국인 등록 및 체류 관련 행정 서비스',
+    category: 'ADMINISTRATION',
+    organization: '법무부 출입국·외국인정책본부',
+    sourceUrl: 'https://www.immigration.go.kr/immigration/1569/subview.do',
+    applyStartAt: null,
+    applyEndAt: null,
+    eligibility: '국내 체류 외국인',
+    tags: null,
+    isPeriodLimited: false,
+  },
 ];
 
 // 화면에서 바로 사용할 리스트
