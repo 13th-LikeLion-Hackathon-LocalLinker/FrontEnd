@@ -4,7 +4,7 @@ const DrawWrapper = styled.div<{ isOpen: boolean }>`
   position: absolute;
   top: 0;
   right: 0;
-  height: 100%;
+  height: 812px;
   width: 208px;
   background: white;
   transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(100%)')};

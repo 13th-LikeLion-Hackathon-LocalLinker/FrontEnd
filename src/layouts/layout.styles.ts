@@ -1,15 +1,26 @@
-// src/layouts/Layout.styles.ts
 import styled from '@emotion/styled';
 
 export const PageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  width: 100%;
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
   position: relative;
   overflow-x: hidden;
 `;
 
+export const Frame = styled.div`
+  width: 375px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+`;
+
 export const Content = styled.main`
-  flex: 1;
-  padding-top: 56px; /* fixed header 만큼 공백 */
+  flex: 1 1 auto;
+  min-height: 0;
+  background: #fff;
 `;
