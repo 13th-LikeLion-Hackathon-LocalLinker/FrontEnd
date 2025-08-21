@@ -18,7 +18,7 @@ export const Page = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  background: #F4F6F4;
+  background: #f4f6f4;
   position: relative;
   overflow-x: hidden;
 `;
@@ -28,5 +28,5 @@ export const Content = styled.main`
   display: block;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding-bottom: 40px;
+  padding-bottom: 100px; //여기 푸터랑 간격임
 `;

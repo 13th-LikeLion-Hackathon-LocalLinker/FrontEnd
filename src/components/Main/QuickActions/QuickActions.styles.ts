@@ -32,7 +32,7 @@ export const Icon = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 8px;
-  background: #FFFFFF;
+  background: #ffffff;
   opacity: 1;
   transform: rotate(0deg);
   display: block;

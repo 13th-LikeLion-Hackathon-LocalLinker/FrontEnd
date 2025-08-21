@@ -9,7 +9,7 @@ export const Field = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 999px;
   padding: 10px 14px;
 `;
