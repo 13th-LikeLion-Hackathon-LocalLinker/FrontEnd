@@ -125,12 +125,12 @@ const Badge = styled.span`
 
 // tag 배지
 export const TagBadge = styled(Badge)`
-  background: #F4FBF5;
-  color: #75A57D;
+  background: #f4fbf5;
+  color: #75a57d;
 `;
 
 // 기간제 배지
 export const LimitedBadge = styled(Badge)`
-  background: #F8F9F8;
+  background: #f8f9f8;
   color: #616462;
 `;

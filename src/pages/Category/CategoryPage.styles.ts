@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 export const Wrap = styled.div`
   padding: 12px 16px 24px;
+  ackground: black;
 `;
 
 export const CountBar = styled.div`
@@ -19,7 +20,7 @@ export const List = styled.div`
 `;
 
 export const Pager = styled.nav`
-  margin: 20px 0 8px;
+  margin: 20px 0 20px;
   display: flex;
   justify-content: center;
   gap: 6px;
@@ -31,10 +32,5 @@ export const Pager = styled.nav`
     background: #fff;
     font-size: 14px;
     cursor: pointer;
-  }
-  .active {
-    background: #0fb050;
-    color: #fff;
-    border-color: #0fb050;
   }
 `;

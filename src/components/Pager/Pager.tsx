@@ -4,7 +4,7 @@ import arrowLeft from '../../assets/icons/arrow_left.svg';
 import arrowRight from '../../assets/icons/arrow_right.svg';
 
 type PagerProps = {
-  page: number;            
+  page: number;
   totalPages: number;
   onChange: (page: number) => void;
 };

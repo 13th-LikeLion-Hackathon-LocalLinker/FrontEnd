@@ -29,6 +29,7 @@ function Header({
           </S.MenuIcon>
         </S.HeaderMain>
       )}
+
       {type === 'detail' && (
         <S.HeaderDetail>
           <S.DetailTextWrapper>

@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 export const Pager = styled.nav`
   width: 334px;
   height: 24px;
-  margin: 16px auto 0;
+  margin: 16px auto 70px;
   display: grid;
   grid-template-columns: 24px 1fr 24px;
   align-items: center;

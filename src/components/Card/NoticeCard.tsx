@@ -39,7 +39,12 @@ export default function NoticeCard(props: NoticeCardProps) {
   const hasTag = !!n.type && n.type.trim().length > 0;
 
   return (
-    <S.Card role="button" aria-label={n.title} onClick={onClick} className={className}>
+    <S.Card
+      role="button"
+      aria-label={n.title}
+      onClick={onClick}
+      className={className}
+    >
       <S.MetaRow>
         <S.MetaLeft>
           <S.CategoryText>{n.category}</S.CategoryText>
