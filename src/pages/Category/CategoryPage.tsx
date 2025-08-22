@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 import Layout from '../../layouts/layout';
 import NoticeCard from '../../components/Card/NoticeCard';
 import Pager from '../../components/Pager/Pager';
@@ -15,6 +16,37 @@ import * as L from './CategoryPage.styles';
 import Fallback from '../../components/common/Fallback';
 
 const PAGE_SIZE = 6;
+
+// 버튼 행 + 버튼 스타일
+const Tabs = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 16px 0;
+`;
+
+const TabButton = styled.button<{ $active: boolean }>`
+  min-width: 53px;
+  height: 37px;
+  border-radius: 200px;
+  padding: 10px 14px;
+  border: none;
+  background: ${(p) => (p.$active ? '#616462' : '#FFFFFF')};
+  color: ${(p) => (p.$active ? '#FFFFFF' : '#616462')};
+  font-size: 14px;
+  line-height: 17px;
+  cursor: pointer;
+`;
+
+// 카테고리 표시 순서
+const CATEGORY_ORDER: CategoryCode[] = [
+  'ADMINISTRATION',
+  'MEDICAL',
+  'HOUSING',
+  'EMPLOYMENT',
+  'EDUCATION',
+  'LIFE_SUPPORT',
+];
 
 export default function CategoryPage() {
   const [sp, setSp] = useSearchParams();
@@ -44,12 +76,38 @@ export default function CategoryPage() {
     });
   };
 
+  const goCategory = (nextCat: CategoryCode) => {
+    setSp((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set('category', nextCat);
+      next.set('page', '1');
+      return next;
+    });
+  };
+
   return (
     <Layout
       showHeader
       showFooter
       headerProps={{ type: 'detail', text: CATEGORY_LABELS[cat] }}
     >
+      {/* ▶ 헤더 아래 카테고리 이동 버튼 */}
+      <Tabs>
+        {CATEGORY_ORDER.map((code) => {
+          const active = code === cat;
+          return (
+            <TabButton
+              key={code}
+              $active={active}
+              aria-pressed={active}
+              onClick={() => goCategory(code)}
+            >
+              {CATEGORY_LABELS[code]}
+            </TabButton>
+          );
+        })}
+      </Tabs>
+
       <L.Wrap>
         <L.CountBar>
           <b style={{ color: '#111827' }}>전체 {total}건</b>

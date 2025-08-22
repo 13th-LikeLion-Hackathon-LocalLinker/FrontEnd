@@ -1,18 +1,8 @@
-// src/components/NoticeCard/NoticeCard.tsx
 import React from 'react';
-import type { Notice } from '../../data/notices';
+import type { NoticeCardProps } from './NoticeCard.types';
 import bookmarket from '../../assets/icons/bookmarket.svg';
 import bookmarketFill from '../../assets/icons/bookmark_fill.svg';
 import * as S from './NoticeCard.styles';
-
-type NoticeCardProps = Notice & {
-  bookmarked?: boolean;
-  defaultBookmarked?: boolean;
-  onToggleBookmark?: (next: boolean) => void;
-  onClick?: (e: React.MouseEvent) => void;
-  className?: string;
-  isPeriodLimited?: boolean;
-};
 
 export default function NoticeCard(props: NoticeCardProps) {
   const {

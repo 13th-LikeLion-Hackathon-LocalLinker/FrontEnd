@@ -1,13 +1,8 @@
 import React from 'react';
+import type { PagerProps } from './Pager.types';
 import * as S from './Pager.styles';
 import arrowLeft from '../../assets/icons/arrow_left.svg';
 import arrowRight from '../../assets/icons/arrow_right.svg';
-
-type PagerProps = {
-  page: number;
-  totalPages: number;
-  onChange: (page: number) => void;
-};
 
 export default function Pager({ page, totalPages, onChange }: PagerProps) {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
