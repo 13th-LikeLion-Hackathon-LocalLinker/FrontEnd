@@ -1,7 +1,8 @@
 import React from 'react';
 import type { CategoryCode } from '../../types/category';
-import { CATEGORY_LABELS } from '../../types/category';
 import { Tabs, TabButton } from './CategoryTabs.styles';
+import { CATEGORY_LABELS } from '../../types/category';
+
 
 type Props = {
   active: CategoryCode;
