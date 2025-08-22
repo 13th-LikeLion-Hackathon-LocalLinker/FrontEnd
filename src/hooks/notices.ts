@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fetchJSON } from '../apis/api'; // utils로 옮겼다면 경로만 변경
+import { fetchJSON } from '../apis/api'; 
 import type { BackendNotice, Notice } from '../data/notices';
 import { mapBackendList, mapBackendToNotice } from '../data/notices';
 import type { CategoryCode } from '../types/category';
