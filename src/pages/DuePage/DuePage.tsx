@@ -1,3 +1,5 @@
+// 마감 임박 페이지
+
 import React from 'react';
 import Layout from '../../layouts/layout';
 import Pager from '../../components/Pager/Pager';
