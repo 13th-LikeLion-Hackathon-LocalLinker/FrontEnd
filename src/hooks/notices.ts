@@ -28,7 +28,7 @@ function useFetch<T>(url: string, deps: React.DependencyList = []) {
     return () => ac.abort();
   }, [url]);
 
-  React.useEffect(run, deps); // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(run, deps);
   const refetch = React.useCallback(() => run(), [run]);
 
   return { data, loading, error, refetch };
