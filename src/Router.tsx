@@ -8,6 +8,7 @@ import ProfileSettingPage from './pages/ProfileSetting/ProfileSettingPage';
 import CategoryPage from './pages/Category/CategoryPage';
 import LatestPage from './pages/LatestPage/LatestPage';
 import DuePage from './pages/DuePage/DuePage';
+import ChatBotPage from './pages/ChatBot/ChatBotPage';
 
 const RootPage = () => {
   const navigate = useNavigate();
@@ -75,6 +76,14 @@ const router = createBrowserRouter([
       {
         path: 'postings/due',
         element: <DuePage />,
+      },
+      {
+        path: 'chatbot',
+        element: (
+          <Layout showHeader showFooter={false} headerProps={{ type: 'chat' }}>
+            <ChatBotPage />
+          </Layout>
+        ),
       },
     ],
   },
