@@ -7,7 +7,8 @@ import icon3 from '../../../assets/icons/main/3.svg';
 import icon4 from '../../../assets/icons/main/4.svg';
 import icon5 from '../../../assets/icons/main/5.svg';
 import icon6 from '../../../assets/icons/main/6.svg';
-import { CategoryCode, CATEGORY_LABELS } from '../../../types/category';
+import type { CategoryCode } from '../../../types/category';
+import { CATEGORY_LABELS } from '../../../types/category';
 
 type Item = { icon: string; label: string; code: CategoryCode };
 
