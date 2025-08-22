@@ -8,10 +8,22 @@ import {
   SectionList,
 } from '../../components/Main/Section/Section';
 import NoticeCard from '../../components/Card/NoticeCard';
-import { latest, dueSoon } from '../../data/notices';
 import FabChat from '../../components/FabChat';
+import { useLatestNotices, useDueSoonNotices } from '../../hooks/notices';
+import Fallback from '../../components/common/Fallback';
 
 export default function MainPage() {
+  const {
+    list: latest,
+    loading: lLoading,
+    error: lError,
+  } = useLatestNotices(100);
+  const {
+    list: due,
+    loading: dLoading,
+    error: dError,
+  } = useDueSoonNotices(200);
+
   return (
     <S.Stage>
       <S.Page>
@@ -21,18 +33,30 @@ export default function MainPage() {
           <Banner />
           <QuickActions />
 
-          <SectionHeader title="최신 공고" />
+          <SectionHeader title="최신 공고" to="/postings/latest" />
           <SectionList>
-            {latest.map((n) => (
-              <NoticeCard key={n.id} {...n} />
-            ))}
+            <Fallback
+              loading={lLoading}
+              error={lError}
+              empty={!lLoading && !lError && latest.slice(0, 3).length === 0}
+            >
+              {latest.slice(0, 3).map((n) => (
+                <NoticeCard key={n.id} {...n} />
+              ))}
+            </Fallback>
           </SectionList>
 
-          <SectionHeader title="마감 임박 공고" />
+          <SectionHeader title="마감 임박 공고" to="/postings/due" />
           <SectionList>
-            {dueSoon.map((n) => (
-              <NoticeCard key={n.id} {...n} />
-            ))}
+            <Fallback
+              loading={dLoading}
+              error={dError}
+              empty={!dLoading && !dError && due.slice(0, 3).length === 0}
+            >
+              {due.slice(0, 3).map((n) => (
+                <NoticeCard key={n.id} {...n} />
+              ))}
+            </Fallback>
           </SectionList>
         </S.Content>
 
