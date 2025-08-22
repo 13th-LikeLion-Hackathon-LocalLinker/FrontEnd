@@ -14,7 +14,7 @@ export const Frame = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: #f4f6f4;
   position: relative;
   overflow: hidden;
 `;
@@ -22,5 +22,5 @@ export const Frame = styled.div`
 export const Content = styled.main`
   flex: 1 1 auto;
   min-height: 0;
-  background: #fff;
+  background: #f4f6f4;
 `;

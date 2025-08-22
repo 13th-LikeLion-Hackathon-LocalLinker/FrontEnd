@@ -5,6 +5,9 @@ import MainPage from './pages/Main/MainPage';
 import OnboardingPage from './pages/Onboarding/OnboardingPage';
 import ServiceIntroPage from './pages/ServiceIntro/ServiceIntroPage';
 import ProfileSettingPage from './pages/ProfileSetting/ProfileSettingPage';
+import CategoryPage from './pages/Category/CategoryPage';
+import LatestPage from './pages/LatestPage/LatestPage';
+import DuePage from './pages/DuePage/DuePage';
 
 const RootPage = () => {
   const navigate = useNavigate();
@@ -60,6 +63,18 @@ const router = createBrowserRouter([
             <ProfileSettingPage />
           </Layout>
         ),
+      },
+      {
+        path: 'category',
+        element: <CategoryPage />,
+      },
+      {
+        path: 'postings/latest',
+        element: <LatestPage />,
+      },
+      {
+        path: 'postings/due',
+        element: <DuePage />,
       },
     ],
   },
