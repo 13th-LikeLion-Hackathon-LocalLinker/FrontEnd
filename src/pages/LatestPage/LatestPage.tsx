@@ -28,7 +28,7 @@ export default function LatestPage() {
           loading={loading}
           error={error}
           empty={!loading && !error && current.length === 0}
-          emptyText="공고가 없습니다."
+          emptyText="공고가 아직 없습니다."
         >
           {current.map((n) => (
             <NoticeCard key={n.id} {...n} />
