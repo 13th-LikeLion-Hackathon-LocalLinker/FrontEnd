@@ -27,3 +27,17 @@ export async function fetchJSON<T>(
     throw e;
   }
 }
+/** 서버 실패 시 목업을 반환. usedMock 플래그로 구분 가능 */
+export async function fetchJSONOrMock<T>(
+  input: RequestInfo | URL,
+  init: RequestInit | undefined,
+  mock: T,
+): Promise<{ data: T; usedMock: boolean }> {
+  try {
+    const data = await fetchJSON<T>(input, init);
+    return { data, usedMock: false };
+  } catch (e) {
+    console.warn('[API FALLBACK -> MOCK]', String(input), e);
+    return { data: mock, usedMock: true };
+  }
+}
