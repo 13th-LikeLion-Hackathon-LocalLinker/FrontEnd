@@ -15,7 +15,9 @@ function Drawer({ isOpen, onClose }: DrawerProps) {
           <S.MenuItem onClick={() => navigate('/service-intro')}>
             서비스 소개
           </S.MenuItem>
-          <S.MenuItem>저장한 공고</S.MenuItem>
+          <S.MenuItem onClick={() => navigate('/bookmarked')}>
+            저장한 공고
+          </S.MenuItem>
           <S.MenuItem onClick={() => navigate('/profile-setting')}>
             개인 설정
           </S.MenuItem>

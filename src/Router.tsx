@@ -8,6 +8,7 @@ import ProfileSettingPage from './pages/ProfileSetting/ProfileSettingPage';
 import CategoryPage from './pages/Category/CategoryPage';
 import LatestPage from './pages/LatestPage/LatestPage';
 import DuePage from './pages/DuePage/DuePage';
+import BookmarkedNoticesPage from './pages/BookmarkedNotices/BookmarkedNoticesPage';
 
 const RootPage = () => {
   const navigate = useNavigate();
@@ -61,6 +62,14 @@ const router = createBrowserRouter([
         element: (
           <Layout showHeader showFooter headerProps={{ type: 'main' }}>
             <ProfileSettingPage />
+          </Layout>
+        ),
+      },
+      {
+        path: 'bookmarked',
+        element: (
+          <Layout showHeader showFooter headerProps={{ type: 'main' }}>
+            <BookmarkedNoticesPage />
           </Layout>
         ),
       },
