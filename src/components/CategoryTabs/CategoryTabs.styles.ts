@@ -23,8 +23,9 @@ export const TabButton = styled.button<{ $active: boolean }>`
   height: 34px;
   padding: 8px 12px;
   border-radius: 200px;
-  cursor: pointer;
   border: none;
+  cursor: pointer;
+  
   
 
   background: ${(p) => (p.$active ? '#616462' : '#FFFFFF')};

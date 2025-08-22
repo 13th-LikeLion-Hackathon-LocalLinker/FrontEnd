@@ -1,17 +1,9 @@
 import React from 'react';
-import type { CategoryCode } from '../../types/category';
 import { Tabs, TabButton } from './CategoryTabs.styles';
 import { CATEGORY_LABELS } from '../../types/category';
+import type { CategoryTabsProps } from './CategoryTabs.types';
 
-
-type Props = {
-  active: CategoryCode;
-  order: CategoryCode[];
-  onChange: (next: CategoryCode) => void;
-  className?: string;
-};
-
-export default function CategoryTabs({ active, order, onChange, className }: Props) {
+export default function CategoryTabs({ active, order, onChange, className }: CategoryTabsProps) {
   return (
     <Tabs className={className}>
       {order.map((code) => (
