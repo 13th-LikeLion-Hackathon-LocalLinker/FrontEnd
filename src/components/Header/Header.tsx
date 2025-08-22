@@ -43,6 +43,14 @@ function Header({
           </S.MenuIcon>
         </S.HeaderDetail>
       )}
+      {type === 'chat' && (
+        <S.HeaderChat>
+          <S.ChatIcon>
+            <ArrowLeft onClick={goHome} style={{ color: 'white' }} />
+          </S.ChatIcon>
+          <S.ChatText>챗봇</S.ChatText>
+        </S.HeaderChat>
+      )}
     </>
   );
 }

@@ -3,6 +3,6 @@
 <rect width="24" height="24" fill="#D9D9D9" style="fill:#D9D9D9;fill:color(display-p3 0.8510 0.8510 0.8510);fill-opacity:1;"/>
 </mask>
 <g mask="url(#mask0_178_295)">
-<path d="M16 22L6 12L16 2L17.775 3.775L9.55 12L17.775 20.225L16 22Z" fill="#1C1B1F" style="fill:#1C1B1F;fill:color(display-p3 0.1098 0.1059 0.1216);fill-opacity:1;"/>
+<path d="M16 22L6 12L16 2L17.775 3.775L9.55 12L17.775 20.225L16 22Z" fill="currentColor" style="fill:currentColor;fill:currentColor(display-p3 0.1098 0.1059 0.1216);fill-opacity:1;"/>
 </g>
 </svg>
