@@ -4,13 +4,13 @@ import React from 'react';
 import Layout from '../../layouts/layout';
 import Pager from '../../components/Pager/Pager';
 import NoticeCard from '../../components/Card/NoticeCard';
-import { useDueSoonNotices } from '../../hooks/notices';
+import { useDue } from '../../hooks/useDue';
 import Fallback from '../../components/common/Fallback';
 
 const PAGE_SIZE = 6;
 
 export default function DuePage() {
-  const { list: notices, loading, error } = useDueSoonNotices(200);
+  const { list: notices, loading, error } = useDue(200);
   const [page, setPage] = React.useState(1);
 
   const total = notices.length;

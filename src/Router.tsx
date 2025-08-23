@@ -8,6 +8,8 @@ import ProfileSettingPage from './pages/ProfileSetting/ProfileSettingPage';
 import CategoryPage from './pages/Category/CategoryPage';
 import LatestPage from './pages/LatestPage/LatestPage';
 import DuePage from './pages/DuePage/DuePage';
+import BookmarkedNoticesPage from './pages/BookmarkedNotices/BookmarkedNoticesPage';
+import ChatBotPage from './pages/ChatBot/ChatBotPage';
 
 const RootPage = () => {
   const navigate = useNavigate();
@@ -65,6 +67,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: 'bookmarked',
+        element: (
+          <Layout showHeader showFooter headerProps={{ type: 'main' }}>
+            <BookmarkedNoticesPage />
+          </Layout>
+        ),
+      },
+      {
         path: 'category',
         element: <CategoryPage />,
       },
@@ -75,6 +85,14 @@ const router = createBrowserRouter([
       {
         path: 'postings/due',
         element: <DuePage />,
+      },
+      {
+        path: 'chatbot',
+        element: (
+          <Layout showHeader showFooter={false} headerProps={{ type: 'chat' }}>
+            <ChatBotPage />
+          </Layout>
+        ),
       },
     ],
   },

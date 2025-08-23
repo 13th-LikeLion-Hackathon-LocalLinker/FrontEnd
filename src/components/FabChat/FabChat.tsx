@@ -3,15 +3,18 @@ import React from 'react';
 import * as S from './FabChat.styles';
 import chatIcon from '../../assets/icons/chat.svg';
 import upIcon from '../../assets/icons/up.svg';
+import { useNavigate } from 'react-router-dom';
 
 export default function FabChat() {
+  const navigate = useNavigate();
+
   return (
     <>
       <S.ChatImg
         src={chatIcon}
         alt="챗봇"
         onClick={() => {
-          window.location.href = '#';
+          navigate('/chatbot');
         }}
         draggable={false}
       />
