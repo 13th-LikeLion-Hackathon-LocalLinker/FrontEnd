@@ -32,6 +32,9 @@ export function useLatest(limit = 50) {
     return () => ac.abort();
   }, [limit]);
 
-  const list: Notice[] = React.useMemo(() => mapBackendList(data ?? []), [data]);
+  const list: Notice[] = React.useMemo(
+    () => mapBackendList(data ?? []),
+    [data],
+  );
   return { list, loading, error, usedMock };
 }

@@ -1,3 +1,4 @@
+// src/pages/Category/CategoryPage.tsx
 import React, { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -17,7 +18,6 @@ import CategoryTabs from '../../components/CategoryTabs/CategoryTabs';
 import { CATEGORY_ORDER } from '../../constants/categories';
 import Line from '../../components/Line/Line';
 import { useCategoryResults } from '../../hooks/useCategoryResults';
-import { useMineResults } from '../../hooks/useMineResults';
 import { VISA_OPTIONS, NATIONALITIES } from '../../constants/onboardingOptions';
 
 const PAGE_SIZE = 6;
@@ -78,7 +78,9 @@ const FilterCard = styled.div`
   padding: 14px 12px;
   border-radius: 12px;
   background: #ffffff;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px #e5e7eb inset;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 0 0 1px #e5e7eb inset;
 `;
 const Field = styled.div`
   display: grid;
@@ -86,8 +88,13 @@ const Field = styled.div`
   align-items: center;
   column-gap: 12px;
   row-gap: 10px;
-  & + & { margin-top: 10px; }
-  label { color: #374151; font-size: 13px; }
+  & + & {
+    margin-top: 10px;
+  }
+  label {
+    color: #374151;
+    font-size: 13px;
+  }
 `;
 const Inline = styled.div`
   display: flex;
@@ -157,7 +164,8 @@ function periodEndTs(period: string): number {
 }
 function periodStartTs(period: string): number {
   const start = (period.split('~')[0] ?? '').trim();
-  if (!start || start === '미정' || start === '상시') return Number.NEGATIVE_INFINITY;
+  if (!start || start === '미정' || start === '상시')
+    return Number.NEGATIVE_INFINITY;
   const t = toTsFromYYMMDD(start);
   return t ?? Number.NEGATIVE_INFINITY;
 }
@@ -181,7 +189,10 @@ function cmpDescSafe(a: number, b: number) {
 }
 
 /** 국적 → 언어코드 */
-const NATION_TO_LANGUAGE: Record<string, 'KO'|'EN'|'UZ'|'JA'|'ZH'|'TH'|'VI'> = {
+const NATION_TO_LANGUAGE: Record<
+  string,
+  'KO' | 'EN' | 'UZ' | 'JA' | 'ZH' | 'TH' | 'VI'
+> = {
   미국: 'EN',
   중국: 'ZH',
   베트남: 'VI',
@@ -193,75 +204,89 @@ const NATION_TO_LANGUAGE: Record<string, 'KO'|'EN'|'UZ'|'JA'|'ZH'|'TH'|'VI'> = {
 type SortKey = 'due' | 'latest';
 type MarriedStr = '' | 'true' | 'false';
 
+/** 온보딩 저장값 로딩(프로젝트 키명에 맞게 필요시 수정) */
+function readLS(keys: string[]): string | null {
+  for (const k of keys) {
+    const v = localStorage.getItem(k);
+    if (v && v !== 'null' && v !== 'undefined') return v;
+  }
+  return null;
+}
+function loadOnboardingFilters(): {
+  visa: string;
+  nation: string;
+  married: MarriedStr;
+} {
+  const visa = readLS(['onboardingVisa', 'visa']) ?? '';
+  const nation = readLS(['onboardingNation', 'nation']) ?? '';
+  const marriedRaw = readLS(['onboardingMarried', 'married']);
+  const married: MarriedStr =
+    marriedRaw === 'true' ? 'true' : marriedRaw === 'false' ? 'false' : '';
+  return { visa, nation, married };
+}
+
 export default function CategoryPage() {
   const [sp, setSp] = useSearchParams();
   const raw = sp.get('category');
-  const cat: CategoryCode = isCategoryCode(raw) ? (raw as CategoryCode) : DEFAULT_CATEGORY;
+  const cat: CategoryCode = isCategoryCode(raw)
+    ? (raw as CategoryCode)
+    : DEFAULT_CATEGORY;
 
   // 개인 맞춤 / 정렬
-  const [personalOnly, setPersonalOnly] = useState(true); // ON: 카테고리 API, OFF: mine API + 검색패널
+  const [personalOnly, setPersonalOnly] = useState(true); // ON: 온보딩값, OFF: 화면 필터
   const [sortKey, setSortKey] = useState<SortKey>('due');
 
-  // 검색 필터 상태
-  const [filters, setFilters] = useState<{ visa: string; nation: string; married: MarriedStr }>({
+  // OFF(수동 선택)용 필터 상태
+  const [filters, setFilters] = useState<{
+    visa: string;
+    nation: string;
+    married: MarriedStr;
+  }>({
     visa: '',
     nation: '',
     married: '',
   });
 
-  // 카테고리 API (서버 에러 시 훅 내부에서 목업 폴백)
+  // ON에서 사용할 온보딩 저장값
+  const onboarding = loadOnboardingFilters();
+
+  // 실제 요청에 사용할 조건: ON=온보딩, OFF=수동
+  const active = personalOnly ? onboarding : filters;
+
+  // /api/postings/category 호출 (훅 내부에서 서버 실패 시 목업으로 폴백)
   const {
     list: categoryList,
-    loading: loadingCat,
-    error: errorCat,
+    loading,
+    error,
   } = useCategoryResults({
     cat,
     page: 0,
     size: 500,
-    visa: undefined, // 개인 맞춤 아님
-    language: undefined,
-    married: undefined,
+    visa: active.visa || undefined,
+    language: active.nation ? NATION_TO_LANGUAGE[active.nation] : undefined,
+    married: active.married === '' ? undefined : active.married === 'true',
   });
-
-  // 내 맞춤 API (OFF일 때만 의미있음; 훅 내부에서 서버 에러 시 목업 폴백)
-  const {
-    list: mineList,
-    loading: loadingMine,
-    error: errorMine,
-  } = useMineResults(
-    {
-      visa: !personalOnly && filters.visa ? filters.visa : undefined,
-      language: !personalOnly && filters.nation ? NATION_TO_LANGUAGE[filters.nation] : undefined,
-      isMarried:
-        !personalOnly && filters.married !== '' ? (filters.married === 'true') : undefined,
-      page: 0,
-      size: 500,
-    },
-    { enabled: !personalOnly } // ON이면 굳이 불러오지 않게
-  );
-
-  // 화면에 쓸 소스 선택
-  const all = personalOnly ? categoryList : mineList;
-  const loadingAll = personalOnly ? loadingCat : loadingMine;
-  const errorAll = personalOnly ? errorCat : errorMine;
 
   // 페이지네이션
   const page = Math.max(1, parseInt(sp.get('page') || '1', 10));
 
   // 정렬 적용
   const sortedAll = useMemo(() => {
-    const base = [...all];
+    const base = [...categoryList];
     if (sortKey === 'due') {
-      base.sort((a, b) => cmpAscSafe(periodEndTs(a.period), periodEndTs(b.period)));
+      base.sort((a, b) =>
+        cmpAscSafe(periodEndTs(a.period), periodEndTs(b.period)),
+      );
     } else {
-      base.sort((a, b) => cmpDescSafe(periodStartTs(a.period), periodStartTs(b.period)));
+      base.sort((a, b) =>
+        cmpDescSafe(periodStartTs(a.period), periodStartTs(b.period)),
+      );
     }
     return base;
-  }, [all, sortKey]);
+  }, [categoryList, sortKey]);
 
   const total = sortedAll.length;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-
   const current = useMemo(() => {
     const start = (page - 1) * PAGE_SIZE;
     return sortedAll.slice(start, start + PAGE_SIZE);
@@ -275,7 +300,9 @@ export default function CategoryPage() {
       return next;
     });
     requestAnimationFrame(() =>
-      document.getElementById('top-anchor')?.scrollIntoView({ behavior: 'smooth' }),
+      document
+        .getElementById('top-anchor')
+        ?.scrollIntoView({ behavior: 'smooth' }),
     );
   };
 
@@ -292,7 +319,11 @@ export default function CategoryPage() {
   const resetFilters = () => setFilters({ visa: '', nation: '', married: '' });
 
   return (
-    <Layout showHeader showFooter headerProps={{ type: 'detail', text: CATEGORY_LABELS[cat] }}>
+    <Layout
+      showHeader
+      showFooter
+      headerProps={{ type: 'detail', text: CATEGORY_LABELS[cat] }}
+    >
       <div id="top-anchor" />
 
       {/* 카테고리 탭 + 구분선 */}
@@ -303,7 +334,11 @@ export default function CategoryPage() {
         {/* 상단 건수 */}
         <L.CountBar>
           <b style={{ color: '#111827' }}>전체 {total}건</b>
-          {errorAll && <span style={{ color: 'crimson', marginLeft: 8 }}>에러: {errorAll}</span>}
+          {error && (
+            <span style={{ color: 'crimson', marginLeft: 8 }}>
+              에러: {error}
+            </span>
+          )}
         </L.CountBar>
 
         {/* 개인 맞춤 토글 + 정렬 */}
@@ -336,14 +371,16 @@ export default function CategoryPage() {
           </SortWrap>
         </Controls>
 
-        {/* 스위치 OFF → 검색 패널(=/api/postings/mine 파라미터) */}
+        {/* 스위치 OFF → 검색 패널(같은 /category 파라미터로 전송) */}
         {!personalOnly && (
           <FilterCard>
             <Field>
               <label>체류자격(비자)</label>
               <Select
                 value={filters.visa}
-                onChange={(e) => setFilters((f) => ({ ...f, visa: e.target.value }))}
+                onChange={(e) =>
+                  setFilters((f) => ({ ...f, visa: e.target.value }))
+                }
               >
                 <option value="">전체</option>
                 {VISA_OPTIONS.map((v) => (
@@ -358,7 +395,9 @@ export default function CategoryPage() {
               <label>국적</label>
               <Select
                 value={filters.nation}
-                onChange={(e) => setFilters((f) => ({ ...f, nation: e.target.value }))}
+                onChange={(e) =>
+                  setFilters((f) => ({ ...f, nation: e.target.value }))
+                }
               >
                 <option value="">전체</option>
                 {NATIONALITIES.map((n) => (
@@ -378,7 +417,9 @@ export default function CategoryPage() {
                     name="married"
                     value="true"
                     checked={filters.married === 'true'}
-                    onChange={() => setFilters((f) => ({ ...f, married: 'true' }))}
+                    onChange={() =>
+                      setFilters((f) => ({ ...f, married: 'true' }))
+                    }
                   />
                   기혼
                 </Radio>
@@ -388,7 +429,9 @@ export default function CategoryPage() {
                     name="married"
                     value="false"
                     checked={filters.married === 'false'}
-                    onChange={() => setFilters((f) => ({ ...f, married: 'false' }))}
+                    onChange={() =>
+                      setFilters((f) => ({ ...f, married: 'false' }))
+                    }
                   />
                   비혼
                 </Radio>
@@ -407,7 +450,11 @@ export default function CategoryPage() {
 
             <Actions>
               <GhostBtn onClick={resetFilters}>초기화</GhostBtn>
-              <PrimaryBtn onClick={() => { /* 필터 변경 즉시 반영되므로 별도 submit 불필요 */ }}>
+              <PrimaryBtn
+                onClick={() => {
+                  /* 변경 즉시 훅에 반영되므로 별도 submit 불필요 */
+                }}
+              >
                 검색
               </PrimaryBtn>
             </Actions>
@@ -417,9 +464,9 @@ export default function CategoryPage() {
         {/* 리스트 */}
         <L.List>
           <Fallback
-            loading={loadingAll}
-            error={errorAll}
-            empty={!loadingAll && !errorAll && current.length === 0}
+            loading={loading}
+            error={error}
+            empty={!loading && !error && current.length === 0}
           >
             {current.map((n) => (
               <NoticeCard key={n.id} {...n} />
@@ -427,7 +474,7 @@ export default function CategoryPage() {
           </Fallback>
         </L.List>
 
-        {!loadingAll && !errorAll && totalPages > 1 && (
+        {!loading && !error && totalPages > 1 && (
           <Pager page={page} totalPages={totalPages} onChange={setPageSafe} />
         )}
       </L.Wrap>
