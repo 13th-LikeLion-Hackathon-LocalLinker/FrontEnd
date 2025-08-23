@@ -2,14 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as S from './ChatBotPage.styles';
 import ChatOptionButton from '../../components/ChatOptionButton/ChatOptionButton';
 import type { ChatBotProps } from './ChatBotPage.types';
-import { getNationalityCode } from '../../utils/nationaliy';
 
 function ChatBotPage() {
-  const onboardingInfo = JSON.parse(
-    localStorage.getItem('onboardingInfo') || '{}',
-  );
-  const countryCode = getNationalityCode(onboardingInfo.nationality);
-
   const [messages, setMessages] = useState<ChatBotProps[]>([
     {
       id: 1,
@@ -85,13 +79,8 @@ function ChatBotPage() {
     typeText(answer);
 
     // api 코드
-    // try {
-    //   const response = await axios.post('/api/chat/ask', { query: option, language: countryCode });
-    //   const answer = response.data.answer;
-    //   typeText(answer);
-    // } catch (error) {
-    //   typeText('죄송합니다. 서버와 통신 중 오류가 발생했습니다.');
-    // }
+    // const answer = await sendChatMessage(option);
+    // typeText(answer);
   };
 
   return (
