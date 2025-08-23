@@ -2,13 +2,13 @@ import React from 'react';
 import Layout from '../../layouts/layout';
 import Pager from '../../components/Pager/Pager';
 import NoticeCard from '../../components/Card/NoticeCard';
-import { useLatestNotices } from '../../hooks/notices';
+import { useLatest } from '../../hooks/useLatest';
 import Fallback from '../../components/common/Fallback';
 
 const PAGE_SIZE = 6;
 
 export default function LatestPage() {
-  const { list, loading, error } = useLatestNotices(50);
+  const { list, loading, error } = useLatest(50);
   const [page, setPage] = React.useState(1);
 
   const total = list.length;
