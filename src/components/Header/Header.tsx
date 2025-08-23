@@ -3,7 +3,6 @@ import * as S from './Header.styles';
 import { useNavigate } from 'react-router-dom';
 import type { HeaderProps } from './Header.types';
 import menu from '../../assets/icons/menu.svg';
-import { ReactComponent as ArrowDropdown } from '../../assets/icons/dropdown_arrow.svg';
 import { ReactComponent as ArrowLeft } from '../../assets/icons/arrow_left.svg';
 
 function Header({
@@ -20,9 +19,7 @@ function Header({
         <S.HeaderMain>
           <S.MainTextWrapper>
             <S.TitleText>천안시</S.TitleText>
-            <S.MainIcon>
-              <ArrowDropdown style={{ color: 'white' }} />
-            </S.MainIcon>
+            <S.MainIcon></S.MainIcon>
           </S.MainTextWrapper>
           <S.MenuIcon onClick={onMenuClick}>
             <img src={menu} alt="" />
