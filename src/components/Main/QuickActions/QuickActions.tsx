@@ -31,7 +31,7 @@ export default function QuickActions() {
           </S.ItemLink>
         ))}
       </S.Grid>
-      
+
       <Line />
     </>
   );

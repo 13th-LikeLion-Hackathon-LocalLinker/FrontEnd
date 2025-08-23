@@ -25,8 +25,6 @@ export const TabButton = styled.button<{ $active: boolean }>`
   border-radius: 200px;
   border: none;
   cursor: pointer;
-  
-  
 
   background: ${(p) => (p.$active ? '#616462' : '#FFFFFF')};
   color: ${(p) => (p.$active ? '#FFFFFF' : '#616462')};
