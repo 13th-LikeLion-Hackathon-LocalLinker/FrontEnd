@@ -83,6 +83,7 @@ export function mapBackendToNotice(dto: BackendNotice): Notice {
 export function mapBackendList(list: BackendNotice[]): Notice[] {
   return list.map(mapBackendToNotice);
 }
+// data/notices.ts 내
 export const MOCK_BACKEND_LATEST: BackendNotice[] = [
   {
     id: 1,

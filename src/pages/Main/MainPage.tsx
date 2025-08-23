@@ -9,20 +9,18 @@ import {
 } from '../../components/Main/Section/Section';
 import NoticeCard from '../../components/Card/NoticeCard';
 import FabChat from '../../components/FabChat';
-import { useLatestNotices, useDueSoonNotices } from '../../hooks/notices';
+import { useLatest } from '../../hooks/useLatest';
+import { useDue } from '../../hooks/useDue';
 import Fallback from '../../components/common/Fallback';
 
+import { useBookmark } from '../../hooks/useBookmark';
+
 export default function MainPage() {
-  const {
-    list: latest,
-    loading: lLoading,
-    error: lError,
-  } = useLatestNotices(100);
-  const {
-    list: due,
-    loading: dLoading,
-    error: dError,
-  } = useDueSoonNotices(200);
+  const { list: latest, loading: lLoading, error: lError } = useLatest(50);
+  const { list: due, loading: dLoading, error: dError } = useDue(200);
+
+  // 북마크 상태
+  const { bookmarkedIds, toggleBookmark } = useBookmark();
 
   return (
     <S.Stage>
@@ -41,7 +39,12 @@ export default function MainPage() {
               empty={!lLoading && !lError && latest.slice(0, 3).length === 0}
             >
               {latest.slice(0, 3).map((n) => (
-                <NoticeCard key={n.id} {...n} />
+                <NoticeCard
+                  key={n.id}
+                  {...n}
+                  bookmarked={bookmarkedIds.includes(n.id)} // 북마크 여부 전달
+                  onToggleBookmark={() => toggleBookmark(n.id)} // 토글 함수 전달
+                />
               ))}
             </Fallback>
           </SectionList>
@@ -54,7 +57,12 @@ export default function MainPage() {
               empty={!dLoading && !dError && due.slice(0, 3).length === 0}
             >
               {due.slice(0, 3).map((n) => (
-                <NoticeCard key={n.id} {...n} />
+                <NoticeCard
+                  key={n.id}
+                  {...n}
+                  bookmarked={bookmarkedIds.includes(n.id)}
+                  onToggleBookmark={() => toggleBookmark(n.id)}
+                />
               ))}
             </Fallback>
           </SectionList>
