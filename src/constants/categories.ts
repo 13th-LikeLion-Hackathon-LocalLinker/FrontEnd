@@ -1,7 +1,7 @@
 import type { CategoryCode } from '../types/category';
 
 export const CATEGORY_ORDER: CategoryCode[] = [
-  'ADMINSTRATION',
+  'ADMINISTRATION',
   'MEDICAL',
   'HOUSING',
   'EMPLOYMENT',

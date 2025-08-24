@@ -1,5 +1,5 @@
 export const CATEGORY_CODES = [
-  'ADMINSTRATION',
+  'ADMINISTRATION',
   'MEDICAL',
   'HOUSING',
   'EMPLOYMENT',
@@ -10,7 +10,7 @@ export const CATEGORY_CODES = [
 export type CategoryCode = (typeof CATEGORY_CODES)[number];
 
 export const CATEGORY_LABELS: Record<CategoryCode, string> = {
-  ADMINSTRATION: '행정',
+  ADMINISTRATION: '행정',
   MEDICAL: '의료',
   HOUSING: '주거',
   EMPLOYMENT: '취업/근로',
@@ -18,7 +18,7 @@ export const CATEGORY_LABELS: Record<CategoryCode, string> = {
   LIFE_SUPPORT: '생활 지원',
 };
 
-export const DEFAULT_CATEGORY: CategoryCode = 'ADMINSTRATION';
+export const DEFAULT_CATEGORY: CategoryCode = 'ADMINISTRATION';
 
 export function isCategoryCode(v: unknown): v is CategoryCode {
   return (

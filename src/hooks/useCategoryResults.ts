@@ -1,15 +1,18 @@
-// src/hooks/useCategoryResults.ts
 import * as React from 'react';
-import { fetchJSONOrMock } from '../apis/api';
+import { fetchJSON } from '../apis/api'; // ⬅️ 여기!
 import type { CategoryCode } from '../types/category';
 import type { BackendNotice, Notice } from '../data/notices';
-import { mapBackendList, MOCK_BACKEND_LATEST } from '../data/notices';
-import { buildQS, normalizeVisa } from '../utils/shared';
+import { mapBackendList } from '../data/notices';
+import {
+  buildQS,
+  normalizeVisa,
+  normalizeCategoryParam,
+} from '../utils/shared';
 
 type Language = 'KO' | 'EN' | 'UZ' | 'JA' | 'ZH' | 'TH' | 'VI';
 
 type Params = {
-  cat: CategoryCode; // "ADMINSTRATION" | "MEDICAL" | ...
+  cat: CategoryCode;
   page?: number;
   size?: number;
   visa?: string;
@@ -21,18 +24,18 @@ export function useCategoryResults(params: Params) {
   const [list, setList] = React.useState<Notice[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
-  const [usedMock, setUsedMock] = React.useState(false);
 
   React.useEffect(() => {
     const ac = new AbortController();
     setLoading(true);
     setError(null);
-    setUsedMock(false);
+
+    const categoryParam = normalizeCategoryParam(params.cat);
 
     const url =
       `/api/postings/category?` +
       buildQS({
-        category: params.cat,
+        category: categoryParam,
         page: typeof params.page === 'number' ? params.page : undefined,
         size: typeof params.size === 'number' ? params.size : undefined,
         visa: normalizeVisa(params.visa),
@@ -41,31 +44,31 @@ export function useCategoryResults(params: Params) {
           typeof params.married === 'boolean' ? params.married : undefined,
       });
 
-    fetchJSONOrMock<BackendNotice[]>(
-      url,
-      { signal: ac.signal },
-      MOCK_BACKEND_LATEST,
-    )
-      .then(({ data, usedMock }) => {
-        setUsedMock(usedMock);
-        const raw = usedMock
-          ? (data ?? []).filter((n) => n.category === params.cat) // 목업: 카테고리만 반영
-          : (data ?? []);
-        setList(mapBackendList(raw));
-      })
-      .catch((e) => {
-        console.warn(
-          '[useCategoryResults] fallback to MOCK due to error:',
-          (e as Error)?.message,
+    (async () => {
+      try {
+        // 서버가 배열을 바로 주거나, {data|content|list} 래퍼로 줄 수 있음 → 형태 방어
+        const res: any = await fetchJSON(url, { signal: ac.signal });
+        const payload = Array.isArray(res)
+          ? res
+          : (res?.data ?? res?.content ?? res?.list ?? []);
+        const arr: BackendNotice[] = Array.isArray(payload) ? payload : [];
+
+        // 혹시 섞여 올 수 있어 한 번 더 필터(정규화 비교)
+        const filtered = arr.filter(
+          (n) => normalizeCategoryParam(n?.category as any) === categoryParam,
         );
-        const raw = MOCK_BACKEND_LATEST.filter(
-          (n) => n.category === params.cat,
-        );
-        setList(mapBackendList(raw));
-        setError(null);
-        setUsedMock(true);
-      })
-      .finally(() => setLoading(false));
+
+        if (!ac.signal.aborted) {
+          setList(mapBackendList(filtered.length ? filtered : arr));
+          setLoading(false);
+        }
+      } catch (e: any) {
+        if (e?.name === 'AbortError') return; // StrictMode에서 정상 발생 → 무시
+        setError(e?.message ?? String(e));
+        setList([]);
+        setLoading(false);
+      }
+    })();
 
     return () => ac.abort();
   }, [
@@ -77,5 +80,5 @@ export function useCategoryResults(params: Params) {
     params.married,
   ]);
 
-  return { list, loading, error, usedMock };
+  return { list, loading, error };
 }

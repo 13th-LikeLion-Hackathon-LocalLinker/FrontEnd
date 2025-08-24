@@ -1,32 +1,80 @@
+// src/pages/Bookmarked/BookmarkedNoticesPage.tsx
 import React from 'react';
 import * as S from './BookmarkedNoticesPage.styles';
 import NoticeCard from '../../components/Card/NoticeCard';
-import { mapBackendList, MOCK_BACKEND_LATEST } from '../../data/notices';
-import { useBookmark } from '../../hooks/useBookmark'; // 북마크 훅 import
+import {
+  mapBackendList,
+  type BackendNotice,
+  type Notice,
+} from '../../data/notices';
+import { useBookmark } from '../../hooks/useBookmark';
+import { fetchJSON } from '../../apis/api'; // ← 모크 없는 실제 fetch
 
 export default function BookmarkedNoticesPage() {
   const { bookmarkedIds, toggleBookmark } = useBookmark();
+  const [list, setList] = React.useState<Notice[]>([]);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
-  // 공고 데이터 (API 호출을 이미 커스텀 훅으로 처리한다면 그곳에서 읽어와도 됨)
-  const notices = mapBackendList(MOCK_BACKEND_LATEST);
+  React.useEffect(() => {
+    const ac = new AbortController();
 
-  // 북마크된 공고만 필터링
-  const bookmarkedNotices = notices.filter((n) => bookmarkedIds.includes(n.id));
+    // 북마크가 없으면 요청 안 함
+    if (!bookmarkedIds || bookmarkedIds.length === 0) {
+      setList([]);
+      setLoading(false);
+      setError(null);
+      return () => ac.abort();
+    }
+
+    setLoading(true);
+    setError(null);
+
+    (async () => {
+      try {
+        // 서버에서 넉넉히 가져온 뒤 북마크로 필터
+        const res: any = await fetchJSON('/api/postings/latest?limit=200', {
+          signal: ac.signal,
+        });
+        const payload = Array.isArray(res)
+          ? res
+          : (res?.data ?? res?.content ?? res?.list ?? []);
+        const arr: BackendNotice[] = Array.isArray(payload) ? payload : [];
+
+        const all = mapBackendList(arr); // BackendNotice[] -> Notice[]
+        const bookmarked = all.filter((n) => bookmarkedIds.includes(n.id)); // id는 string
+
+        if (!ac.signal.aborted) {
+          setList(bookmarked);
+          setLoading(false);
+        }
+      } catch (e: any) {
+        if (e?.name === 'AbortError') return; // 개발모드 StrictMode에서 정상
+        setError(e?.message ?? String(e));
+        setList([]);
+        setLoading(false);
+      }
+    })();
+
+    return () => ac.abort();
+  }, [bookmarkedIds]);
 
   return (
     <S.Stage>
       <S.Page>
         <S.Content>
-          {bookmarkedNotices.length === 0 ? (
+          {loading && <S.EmptyText>불러오는 중…</S.EmptyText>}
+          {!loading && error && <S.EmptyText>오류: {error}</S.EmptyText>}
+          {!loading && !error && list.length === 0 ? (
             <S.EmptyText>저장한 공고가 없습니다.</S.EmptyText>
           ) : (
             <S.ListContainer>
-              {bookmarkedNotices.map((n) => (
+              {list.map((n) => (
                 <NoticeCard
                   key={n.id}
                   {...n}
-                  bookmarked={true} // 저장공고는 모두 북마크 상태
-                  onToggleBookmark={() => toggleBookmark(n.id)} // 토글 콜백 전달
+                  bookmarked={true}
+                  onToggleBookmark={() => toggleBookmark(n.id)}
                 />
               ))}
             </S.ListContainer>

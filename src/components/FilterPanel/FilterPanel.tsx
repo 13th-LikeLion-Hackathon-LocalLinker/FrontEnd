@@ -20,7 +20,7 @@ export default function FilterPanel({
           value={visa}
           onChange={(e) => onChange({ visa: e.target.value })}
         >
-          <option value="">전체</option>
+          <option value="">비자 선택</option>
           {visaOptions.map((v) => (
             <option key={v.value} value={v.value}>
               {v.label}
@@ -35,7 +35,7 @@ export default function FilterPanel({
           value={nation}
           onChange={(e) => onChange({ nation: e.target.value })}
         >
-          <option value="">전체</option>
+          <option value="">국적 선택 </option>
           {nationalities.map((n) => (
             <option key={n.value} value={n.value}>
               {n.label}
@@ -66,16 +66,6 @@ export default function FilterPanel({
               onChange={() => onChange({ married: 'false' })}
             />
             비혼
-          </S.Radio>
-          <S.Radio style={{ marginLeft: 8 }}>
-            <input
-              type="radio"
-              name="married"
-              value=""
-              checked={married === ''}
-              onChange={() => onChange({ married: '' })}
-            />
-            전체
           </S.Radio>
         </S.Inline>
       </S.Field>

@@ -9,7 +9,7 @@ import { type CategoryCode } from '../../../types/category';
 export type Item = { icon: string; label: string; code: CategoryCode };
 
 export const ITEMS: readonly Item[] = [
-  { icon: icon1, label: '행정', code: 'ADMINSTRATION' },
+  { icon: icon1, label: '행정', code: 'ADMINISTRATION' },
   { icon: icon2, label: '의료', code: 'MEDICAL' },
   { icon: icon3, label: '주거', code: 'HOUSING' },
   { icon: icon4, label: '취업/근로', code: 'EMPLOYMENT' },
