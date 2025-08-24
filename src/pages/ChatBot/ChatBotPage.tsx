@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as S from './ChatBotPage.styles';
 import ChatOptionButton from '../../components/ChatOptionButton/ChatOptionButton';
 import type { ChatBotProps } from './ChatBotPage.types';
+import { sendChatMessage } from '../../apis/chat';
 
 function ChatBotPage() {
   const [messages, setMessages] = useState<ChatBotProps[]>([
@@ -23,37 +24,27 @@ function ChatBotPage() {
 
   //   한글자씩 나오게 하는 효과
   const typeText = (fullText: string) => {
+    const id = Date.now();
+    setMessages((prev) => [...prev, { id, text: '', sender: 'bot' }]);
+
     let index = 0;
     const interval = setInterval(() => {
-      if (index >= fullText.length) {
+      if (index < fullText.length) {
+        const currentText = fullText.slice(0, index + 1); // 맨 앞글자 누락을 방지하기 위한 앞에서부터 자르기
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === id ? { ...msg, text: currentText } : msg,
+          ),
+        );
+        index++;
+      } else {
         clearInterval(interval);
-        return;
       }
-
-      setMessages((prev) => {
-        const lastMsg = prev[prev.length - 1];
-
-        if (!lastMsg || lastMsg.sender !== 'bot') {
-          return [
-            ...prev,
-            { id: Date.now(), text: fullText[index] || '', sender: 'bot' },
-          ];
-        } else {
-          const updated = [...prev];
-          updated[updated.length - 1] = {
-            ...lastMsg,
-            text: lastMsg.text + (fullText[index] || ''),
-          };
-          return updated;
-        }
-      });
-
-      index++;
-    }, 30);
+    }, 20);
   };
 
-  const handleOptionClick = (option: string) => {
-    // 1. 유저 메시지 추가
+  const handleOptionClick = async (option: string) => {
+    // 유저 메시지 추가
     const newUserMsg: ChatBotProps = {
       id: Date.now(),
       text: option,
@@ -61,26 +52,37 @@ function ChatBotPage() {
     };
     setMessages((prev) => [...prev, newUserMsg]);
 
-    // 2. 목업 답변
-    const mockResponses: Record<string, string> = {
-      '대표 관광지': '서울의 경복궁, 부산의 해운대가 대표 관광지입니다.',
-      '음식물쓰레기 배출법': '음식물쓰레기는 전용 용기에 담아 배출해주세요.',
-      '외국인 의료비 지원':
-        '외국인은 국민건강보험공단에서 의료비 지원을 받을 수 있습니다.',
-      다문화가족지원센터:
-        '각 지역 다문화가족지원센터에서 상담을 받으실 수 있습니다.',
-      '외국인 지원기관':
-        '외국인 지원기관 정보는 정부 포털에서 확인 가능합니다.',
-      '외국인 등록': '외국인 등록은 출입국관리사무소에서 가능합니다.',
-    };
+    // 봇 로딩 메시지 추가
+    const loadingId = Date.now() + 1;
+    setMessages((prev) => [
+      ...prev,
+      { id: loadingId, text: '...', sender: 'bot' },
+    ]);
 
-    // 3. 타자 효과로 봇 메시지 출력
-    const answer = mockResponses[option] || '죄송합니다. 답변을 준비 중입니다.';
-    typeText(answer);
-
-    // api 코드
-    // const answer = await sendChatMessage(option);
-    // typeText(answer);
+    try {
+      const answer = await sendChatMessage(option);
+      if (answer) {
+        // 로딩 메시지를 실제 응답으로 교체
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === loadingId ? { ...msg, text: '' } : msg,
+          ),
+        );
+        typeText(answer); // 글자 타이핑 효과
+      } else {
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === loadingId ? { ...msg, text: 'no response' } : msg,
+          ),
+        );
+      }
+    } catch (error) {
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === loadingId ? { ...msg, text: 'error' } : msg,
+        ),
+      );
+    }
   };
 
   return (
