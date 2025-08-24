@@ -9,7 +9,7 @@ import SortButtons from '../../components/SortButtons/SortButtons';
 const PAGE_SIZE = 6;
 
 export default function LatestPage() {
-  const { list, loading, error } = useLatest(200,50);
+  const { list, loading, error } = useLatest(200, 50);
   const [page, setPage] = React.useState(1);
 
   const total = list.length;
@@ -23,7 +23,7 @@ export default function LatestPage() {
       <section style={{ padding: '12px 16px' }}>
         <div style={{ fontSize: 12, color: 'black' }}>전체 {total}건</div>
       </section>
-      
+
       <section style={{ display: 'grid', gap: 12, padding: '0 16px 16px' }}>
         <Fallback
           loading={loading}

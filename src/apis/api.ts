@@ -17,7 +17,13 @@ export async function fetchJSON<T>(
 
   if (!res.ok) {
     const body = await res.text().catch(() => '');
-    console.error('[API ERROR]', res.status, res.statusText, String(input), body);
+    console.error(
+      '[API ERROR]',
+      res.status,
+      res.statusText,
+      String(input),
+      body,
+    );
     throw new Error(`HTTP ${res.status}`);
   }
 
