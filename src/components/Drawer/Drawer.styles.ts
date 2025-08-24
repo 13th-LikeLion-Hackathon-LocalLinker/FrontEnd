@@ -4,7 +4,7 @@ const DrawWrapper = styled.div<{ isOpen: boolean }>`
   position: absolute;
   top: 0;
   right: 0;
-  height: 812px;
+  height: 100vh;
   width: 208px;
   background: white;
   transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(100%)')};
@@ -48,12 +48,13 @@ const DrawerFooter = styled.div`
   padding: 14px 20px;
   color: ${({ theme }) => theme.colors.surface.on};
   align-items: center;
-  justify-content: space-between;
+  width: 100%;
+  background: white;
 `;
 
 const Language = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 4px;
   img {
     width: 22px;
