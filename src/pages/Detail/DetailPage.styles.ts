@@ -45,12 +45,12 @@ const DetailInfo = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 4px;
-  gap: 6px;
+  gap: 10px;
 `;
 
 const DetailTarget = styled.div`
   width: 100%;
-  height: 17px;
+  height: auto;
 
   color: ${({ theme }) => theme.colors.surface.onVariant};
   font-size: 14px;
