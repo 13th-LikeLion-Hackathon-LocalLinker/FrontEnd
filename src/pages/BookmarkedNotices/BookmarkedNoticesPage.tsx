@@ -9,12 +9,18 @@ import {
 } from '../../data/notices';
 import { useBookmark } from '../../hooks/useBookmark';
 import { fetchJSON } from '../../apis/api'; // ← 모크 없는 실제 fetch
+import { useNavigate } from 'react-router-dom';
 
 export default function BookmarkedNoticesPage() {
+  const navigate = useNavigate();
   const { bookmarkedIds, toggleBookmark } = useBookmark();
   const [list, setList] = React.useState<Notice[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+
+  const handleCardClick = (id: string | number) => {
+    navigate(`/detail/${Number(id)}`);
+  };
 
   React.useEffect(() => {
     const ac = new AbortController();
@@ -33,16 +39,19 @@ export default function BookmarkedNoticesPage() {
     (async () => {
       try {
         // 서버에서 넉넉히 가져온 뒤 북마크로 필터
-        const res: any = await fetchJSON('/api/postings/latest?limit=200', {
+        const res: any = await fetchJSON('/api/postings/latest?limit=300', {
           signal: ac.signal,
         });
+        console.log(res);
         const payload = Array.isArray(res)
           ? res
           : (res?.data ?? res?.content ?? res?.list ?? []);
         const arr: BackendNotice[] = Array.isArray(payload) ? payload : [];
 
         const all = mapBackendList(arr); // BackendNotice[] -> Notice[]
-        const bookmarked = all.filter((n) => bookmarkedIds.includes(n.id)); // id는 string
+        const bookmarked = all.filter((n) =>
+          bookmarkedIds.includes(String(n.id)),
+        );
 
         if (!ac.signal.aborted) {
           setList(bookmarked);
@@ -75,6 +84,7 @@ export default function BookmarkedNoticesPage() {
                   {...n}
                   bookmarked={true}
                   onToggleBookmark={() => toggleBookmark(n.id)}
+                  onClick={() => handleCardClick(n.id)}
                 />
               ))}
             </S.ListContainer>

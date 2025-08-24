@@ -90,7 +90,11 @@ const router = createBrowserRouter([
       {
         path: 'detail/:id',
         element: (
-          <Layout showHeader showFooter headerProps={{ type: 'detail' }}>
+          <Layout
+            showHeader
+            showFooter
+            headerProps={{ type: 'detail', hideMenu: true }}
+          >
             <DetailPage />
           </Layout>
         ),
