@@ -5,10 +5,12 @@ import NoticeCard from '../../components/Card/NoticeCard';
 import { useLatest } from '../../hooks/useLatest';
 import Fallback from '../../components/common/Fallback';
 import SortButtons from '../../components/SortButtons/SortButtons';
+import { useNavigate } from 'react-router-dom';
 
 const PAGE_SIZE = 6;
 
 export default function LatestPage() {
+  const navigate = useNavigate();
   const { list, loading, error } = useLatest(200, 50);
   const [page, setPage] = React.useState(1);
 
@@ -16,6 +18,9 @@ export default function LatestPage() {
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const start = (page - 1) * PAGE_SIZE;
   const current = list.slice(start, start + PAGE_SIZE);
+  const handleCardClick = (id: string | number) => {
+    navigate(`/detail/${Number(id)}`);
+  };
 
   return (
     <Layout headerProps={{ type: 'detail', text: '최신 공고' }}>
@@ -32,7 +37,11 @@ export default function LatestPage() {
           emptyText="공고가 아직 없습니다."
         >
           {current.map((n) => (
-            <NoticeCard key={n.id} {...n} />
+            <NoticeCard
+              key={n.id}
+              {...n}
+              onClick={() => handleCardClick(n.id)}
+            />
           ))}
         </Fallback>
       </section>
