@@ -54,7 +54,11 @@ const router = createBrowserRouter([
       {
         path: 'service-intro',
         element: (
-          <Layout showHeader showFooter headerProps={{ type: 'main' }}>
+          <Layout
+            showHeader
+            showFooter
+            headerProps={{ type: 'detail', text: '서비스 소개' }}
+          >
             <ServiceIntroPage />
           </Layout>
         ),
@@ -62,7 +66,11 @@ const router = createBrowserRouter([
       {
         path: 'profile-setting',
         element: (
-          <Layout showHeader showFooter headerProps={{ type: 'main' }}>
+          <Layout
+            showHeader
+            showFooter
+            headerProps={{ type: 'detail', text: '개인 설정' }} // ← 여기 main → detail, text 지정
+          >
             <ProfileSettingPage />
           </Layout>
         ),
@@ -70,7 +78,11 @@ const router = createBrowserRouter([
       {
         path: 'bookmarked',
         element: (
-          <Layout showHeader showFooter headerProps={{ type: 'main' }}>
+          <Layout
+            showHeader
+            showFooter
+            headerProps={{ type: 'detail', text: '저장한 공고' }}
+          >
             <BookmarkedNoticesPage />
           </Layout>
         ),

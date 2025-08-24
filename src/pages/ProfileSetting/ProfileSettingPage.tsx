@@ -3,7 +3,7 @@ import * as S from './ProfileSettingPage.styles';
 import Label from '../../components/Onboarding/Label/Label';
 import RadioLabel from '../../components/Onboarding/RadioLabel/RadioLabel';
 import Select from '../../components/Onboarding/Select/Select';
-import { VISA_OPTIONS, NATIONALITIES } from '../../constants/onboardingOptions'; // 외부 상수 임포트
+import { VISA_OPTIONS, NATIONALITIES } from '../../constants/onboardingOptions';
 
 function ProfileSettingPage() {
   const [visaType, setVisaType] = useState(VISA_OPTIONS[0].value);
