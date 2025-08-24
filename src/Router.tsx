@@ -10,6 +10,7 @@ import LatestPage from './pages/LatestPage/LatestPage';
 import DuePage from './pages/DuePage/DuePage';
 import BookmarkedNoticesPage from './pages/BookmarkedNotices/BookmarkedNoticesPage';
 import ChatBotPage from './pages/ChatBot/ChatBotPage';
+import DetailPage from './pages/Detail/DetailPage';
 
 const RootPage = () => {
   const navigate = useNavigate();
@@ -71,6 +72,14 @@ const router = createBrowserRouter([
         element: (
           <Layout showHeader showFooter headerProps={{ type: 'main' }}>
             <BookmarkedNoticesPage />
+          </Layout>
+        ),
+      },
+      {
+        path: 'detail/:id',
+        element: (
+          <Layout showHeader showFooter headerProps={{ type: 'detail' }}>
+            <DetailPage />
           </Layout>
         ),
       },

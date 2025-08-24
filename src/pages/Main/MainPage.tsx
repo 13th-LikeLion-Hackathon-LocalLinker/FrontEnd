@@ -8,6 +8,7 @@ import {
   SectionList,
 } from '../../components/Main/Section/Section';
 import NoticeCard from '../../components/Card/NoticeCard';
+import { useNavigate } from 'react-router-dom';
 import FabChat from '../../components/FabChat';
 import { useLatest } from '../../hooks/useLatest';
 import { useDue } from '../../hooks/useDue';
@@ -18,9 +19,12 @@ import { useBookmark } from '../../hooks/useBookmark';
 export default function MainPage() {
   const { list: latest, loading: lLoading, error: lError } = useLatest(50);
   const { list: due, loading: dLoading, error: dError } = useDue(200);
-
-  // 북마크 상태
   const { bookmarkedIds, toggleBookmark } = useBookmark();
+  const navigate = useNavigate();
+
+  const handleCardClick = (id: string | number) => {
+    navigate(`/detail/${Number(id)}`);
+  };
 
   return (
     <S.Stage>
@@ -42,8 +46,9 @@ export default function MainPage() {
                 <NoticeCard
                   key={n.id}
                   {...n}
-                  bookmarked={bookmarkedIds.includes(n.id)} // 북마크 여부 전달
-                  onToggleBookmark={() => toggleBookmark(n.id)} // 토글 함수 전달
+                  bookmarked={bookmarkedIds.includes(n.id)}
+                  onToggleBookmark={() => toggleBookmark(n.id)}
+                  onClick={() => handleCardClick(n.id)}
                 />
               ))}
             </Fallback>
@@ -62,6 +67,7 @@ export default function MainPage() {
                   {...n}
                   bookmarked={bookmarkedIds.includes(n.id)}
                   onToggleBookmark={() => toggleBookmark(n.id)}
+                  onClick={() => handleCardClick(n.id)}
                 />
               ))}
             </Fallback>
