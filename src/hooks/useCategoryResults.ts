@@ -1,13 +1,9 @@
+
 import * as React from 'react';
-import { fetchJSON } from '../apis/api'; // ⬅️ 여기!
+import { fetchJSON } from '../apis/api';
 import type { CategoryCode } from '../types/category';
 import type { BackendNotice, Notice } from '../data/notices';
 import { mapBackendList } from '../data/notices';
-import {
-  buildQS,
-  normalizeVisa,
-  normalizeCategoryParam,
-} from '../utils/shared';
 
 type Language = 'KO' | 'EN' | 'UZ' | 'JA' | 'ZH' | 'TH' | 'VI';
 
@@ -20,6 +16,31 @@ type Params = {
   married?: boolean;
 };
 
+const pick = (res: any): BackendNotice[] => {
+  if (Array.isArray(res)) return res;
+  if (Array.isArray(res?.postings)) return res.postings;
+  const f = res?.data ?? res?.content ?? res?.list ?? [];
+  return Array.isArray(f) ? f : [];
+};
+
+const qs = (o: Record<string, any>) => {
+  const u = new URLSearchParams();
+  Object.entries(o).forEach(([k, v]) => {
+    if (v === undefined || v === null) return;
+    if (typeof v === 'string' && v.trim() === '') return;
+    u.set(k, typeof v === 'boolean' ? String(v) : String(v));
+  });
+  return u.toString();
+};
+
+async function fetchCategory(
+  base: { category: CategoryCode; page: number; size: number; visa?: string; language?: Language; married?: boolean },
+  signal: AbortSignal
+): Promise<BackendNotice[]> {
+  const res = await fetchJSON(`/api/postings/category?${qs(base)}`, { signal });
+  return pick(res);
+}
+
 export function useCategoryResults(params: Params) {
   const [list, setList] = React.useState<Notice[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -27,58 +48,48 @@ export function useCategoryResults(params: Params) {
 
   React.useEffect(() => {
     const ac = new AbortController();
-    setLoading(true);
-    setError(null);
-
-    const categoryParam = normalizeCategoryParam(params.cat);
-
-    const url =
-      `/api/postings/category?` +
-      buildQS({
-        category: categoryParam,
-        page: typeof params.page === 'number' ? params.page : undefined,
-        size: typeof params.size === 'number' ? params.size : undefined,
-        visa: normalizeVisa(params.visa),
-        language: params.language,
-        married:
-          typeof params.married === 'boolean' ? params.married : undefined,
-      });
-
     (async () => {
+      setLoading(true);
+      setError(null);
       try {
-        // 서버가 배열을 바로 주거나, {data|content|list} 래퍼로 줄 수 있음 → 형태 방어
-        const res: any = await fetchJSON(url, { signal: ac.signal });
-        const payload = Array.isArray(res)
-          ? res
-          : (res?.data ?? res?.content ?? res?.list ?? []);
-        const arr: BackendNotice[] = Array.isArray(payload) ? payload : [];
+        const category = params.cat;
+        const page = params.page ?? 0;
+        const size = params.size ?? 50;
 
-        // 혹시 섞여 올 수 있어 한 번 더 필터(정규화 비교)
-        const filtered = arr.filter(
-          (n) => normalizeCategoryParam(n?.category as any) === categoryParam,
+        let got = await fetchCategory(
+          {
+            category,
+            page,
+            size,
+            visa: params.visa?.trim() || undefined,
+            language: params.language,
+            married: typeof params.married === 'boolean' ? params.married : undefined,
+          },
+          ac.signal
         );
 
-        if (!ac.signal.aborted) {
-          setList(mapBackendList(filtered.length ? filtered : arr));
-          setLoading(false);
+        let strict = got.filter((n) => n.category === category);
+        if (!strict.length) {
+          got = await fetchCategory({ category, page, size }, ac.signal);
+          strict = got.filter((n) => n.category === category);
         }
+        if (!strict.length) {
+          const res = await fetchJSON(`/api/postings/latest?limit=${Math.max(50, size * 2)}`, { signal: ac.signal });
+          strict = pick(res).filter((n) => n.category === category);
+        }
+
+        if (!ac.signal.aborted) setList(mapBackendList(strict));
       } catch (e: any) {
-        if (e?.name === 'AbortError') return; // StrictMode에서 정상 발생 → 무시
-        setError(e?.message ?? String(e));
-        setList([]);
-        setLoading(false);
+        if (!ac.signal.aborted) {
+          setError(e?.message ?? String(e));
+          setList([]);
+        }
+      } finally {
+        if (!ac.signal.aborted) setLoading(false);
       }
     })();
-
     return () => ac.abort();
-  }, [
-    params.cat,
-    params.page,
-    params.size,
-    params.visa,
-    params.language,
-    params.married,
-  ]);
+  }, [params.cat, params.page, params.size, params.visa, params.language, params.married]);
 
   return { list, loading, error };
 }
