@@ -12,13 +12,28 @@ function Drawer({ isOpen, onClose }: DrawerProps) {
     <>
       <S.DrawWrapper isOpen={isOpen}>
         <S.Menu>
-          <S.MenuItem onClick={() => navigate('/service-intro')}>
+          <S.MenuItem
+            onClick={() => {
+              navigate('/service-intro');
+              onClose();
+            }}
+          >
             서비스 소개
           </S.MenuItem>
-          <S.MenuItem onClick={() => navigate('/bookmarked')}>
+          <S.MenuItem
+            onClick={() => {
+              navigate('/bookmarked');
+              onClose();
+            }}
+          >
             저장한 공고
           </S.MenuItem>
-          <S.MenuItem onClick={() => navigate('/profile-setting')}>
+          <S.MenuItem
+            onClick={() => {
+              navigate('/profile-setting');
+              onClose();
+            }}
+          >
             개인 설정
           </S.MenuItem>
         </S.Menu>
