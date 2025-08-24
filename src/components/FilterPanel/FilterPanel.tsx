@@ -9,37 +9,34 @@ export default function FilterPanel({
   married,
   onChange,
   onReset,
+  onSubmit,
   visaOptions,
   nationalities,
 }: FilterPanelProps) {
+  const handleSearchClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();   // ✅ 폼 submit 방지 (라우터 404 예방)
+    e.stopPropagation();
+    onSubmit?.();
+  };
+
   return (
     <S.Card>
       <S.Field>
         <label>체류자격(비자)</label>
-        <S.Select
-          value={visa}
-          onChange={(e) => onChange({ visa: e.target.value })}
-        >
+        <S.Select value={visa} onChange={(e) => onChange({ visa: e.target.value })}>
           <option value="">비자 선택</option>
           {visaOptions.map((v) => (
-            <option key={v.value} value={v.value}>
-              {v.label}
-            </option>
+            <option key={v.value} value={v.value}>{v.label}</option>
           ))}
         </S.Select>
       </S.Field>
 
       <S.Field>
         <label>국적</label>
-        <S.Select
-          value={nation}
-          onChange={(e) => onChange({ nation: e.target.value })}
-        >
+        <S.Select value={nation} onChange={(e) => onChange({ nation: e.target.value })}>
           <option value="">국적 선택 </option>
           {nationalities.map((n) => (
-            <option key={n.value} value={n.value}>
-              {n.label}
-            </option>
+            <option key={n.value} value={n.value}>{n.label}</option>
           ))}
         </S.Select>
       </S.Field>
@@ -71,12 +68,8 @@ export default function FilterPanel({
       </S.Field>
 
       <S.Actions>
-        <S.GhostBtn onClick={onReset}>초기화</S.GhostBtn>
-        <S.PrimaryBtn
-          onClick={() => {
-            /* 훅이 즉시 반영하므로 submit 불필요 */
-          }}
-        >
+        <S.GhostBtn type="button" onClick={onReset}>초기화</S.GhostBtn>
+        <S.PrimaryBtn type="button" onClick={handleSearchClick}>
           검색
         </S.PrimaryBtn>
       </S.Actions>

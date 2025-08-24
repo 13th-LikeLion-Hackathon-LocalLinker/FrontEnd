@@ -1,7 +1,12 @@
 // 정렬 로직
 import * as React from 'react';
 import type { Notice } from '../../data/notices';
-import { periodEndTs, periodStartTs, cmpAscSafe, cmpDescSafe } from '../../utils/dates';
+import {
+  periodEndTs,
+  periodStartTs,
+  cmpAscSafe,
+  cmpDescSafe,
+} from '../../utils/dates';
 import type { SortKey } from './SortButtons.types';
 
 // 대한민국시간
@@ -11,7 +16,11 @@ const nowKST = () => {
   return utc + 9 * 60 * 60 * 1_000;
 };
 
-export function sortNotices(list: Notice[], key: SortKey, nowTs = nowKST()): Notice[] {
+export function sortNotices(
+  list: Notice[],
+  key: SortKey,
+  nowTs = nowKST(),
+): Notice[] {
   const arr = [...list];
 
   if (key === 'due') {
