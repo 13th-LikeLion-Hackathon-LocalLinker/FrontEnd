@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Layout from '../../layouts/layout';
 import NoticeCard from '../../components/Card/NoticeCard';
@@ -27,26 +27,23 @@ import type { SortKey } from '../../components/SortButtons/SortButtons.types';
 import { loadOnboardingFilters, type MarriedStr } from '../../utils/onboarding';
 import { normalizeVisa } from '../../utils/shared';
 
+const DEBUG = true;
 const PAGE_SIZE = 6;
+
 type Filters = { visa: string; nation: string; married: MarriedStr };
 
+// 언더스코어 포맷으로 강제
 const toVisaParam = (visaValue?: string): string | undefined => {
   if (!visaValue) return undefined;
-  const fromUtil = normalizeVisa(visaValue);
-  if (fromUtil) return fromUtil;
-  const t = visaValue
-    .trim()
-    .toUpperCase()
-    .replace(/-/g, '_')
-    .replace(/\s+/g, '');
-  return /^(C|D|E|F|G|H)_[0-9]+$/.test(t) ? t : undefined;
+  const n = normalizeVisa(visaValue) || visaValue;
+  return n.trim().toUpperCase().replace(/-/g, '_').replace(/\s+/g, '');
 };
 
 export default function CategoryPage() {
   const navigate = useNavigate();
   const [sp, setSp] = useSearchParams();
 
-  // 렌더 중 Router 업데이트 방지
+  // 렌더 중 Router 업데이트 방지: 다음 틱
   const deferSetSp = useCallback(
     (updater: (prev: URLSearchParams) => URLSearchParams) => {
       setTimeout(() => {
@@ -77,12 +74,32 @@ export default function CategoryPage() {
   });
 
   // 개인맞춤 ON이면 온보딩, OFF면 적용값
-  const onboarding = loadOnboardingFilters(); // { visa, nation, married }
+  const onboarding = loadOnboardingFilters(); // { visa, nation, married: 'true'|'false'|'' }
   const active = personalOnly ? onboarding : applied;
 
   const page = Math.max(1, parseInt(sp.get('page') || '1', 10));
 
+  // 화면 디버그
+  useEffect(() => {
+    if (!DEBUG) return;
+    console.log('[CategoryPage] mount');
+    return () => console.log('[CategoryPage] unmount');
+  }, []);
+  useEffect(() => {
+    if (!DEBUG) return;
+    console.log('[CategoryPage] state', {
+      personalOnly,
+      pending,
+      applied,
+      active,
+      cat,
+      page,
+      sortKey,
+    });
+  }, [personalOnly, pending, applied, active, cat, page, sortKey]);
+
   const applyFilters = useCallback(() => {
+    if (DEBUG) console.log('[CategoryPage] applyFilters()', { pending });
     setApplied(pending);
     deferSetSp((prev) => {
       const next = new URLSearchParams(prev);
@@ -92,13 +109,16 @@ export default function CategoryPage() {
   }, [pending, deferSetSp]);
 
   const resetFilters = useCallback(() => {
+    if (DEBUG) console.log('[CategoryPage] resetFilters()');
     setPending({ visa: '', nation: '', married: '' });
   }, []);
 
   const togglePersonal = useCallback(() => {
     setPersonalOnly((prev) => {
       const nv = !prev;
-      if (prev === true) setPending(applied); // OFF 전환 시 패널 프리필
+      if (prev === true) setPending(applied); // OFF 전환 시 현재 적용값 프리필
+      if (DEBUG)
+        console.log('[CategoryPage] togglePersonal()', { from: prev, to: nv });
       return nv;
     });
     deferSetSp((prev) => {
@@ -108,10 +128,20 @@ export default function CategoryPage() {
     });
   }, [applied, deferSetSp]);
 
-  // 최종 파라미터 (국적은 보여주기만 하고 요청에는 포함 X)
+  // 최종 파라미터 (국적은 전송 X)
   const visaParam = toVisaParam(active.visa);
   const marriedParam =
     active.married === '' ? undefined : active.married === 'true';
+
+  if (DEBUG) {
+    console.log('[CategoryPage] query params to hook', {
+      category: cat,
+      page: 0,
+      size: 500,
+      visa: visaParam,
+      married: marriedParam,
+    });
+  }
 
   const {
     list: categoryList,
@@ -151,6 +181,7 @@ export default function CategoryPage() {
   };
 
   const goCategory = (nextCat: CategoryCode) => {
+    if (DEBUG) console.log('[CategoryPage] goCategory()', { nextCat });
     deferSetSp((prev) => {
       const next = new URLSearchParams(prev);
       next.set('category', nextCat);
@@ -197,7 +228,7 @@ export default function CategoryPage() {
         {!personalOnly && (
           <FilterPanel
             visa={pending.visa}
-            nation={pending.nation} // 보여주기용
+            nation={pending.nation} // 보여주기 전용
             married={pending.married}
             onChange={(patch) => setPending((f) => ({ ...f, ...patch }))}
             onReset={resetFilters}
