@@ -39,7 +39,7 @@ export default function BookmarkedNoticesPage() {
     (async () => {
       try {
         // 서버에서 넉넉히 가져온 뒤 북마크로 필터
-        const res: any = await fetchJSON('/api/postings/latest?limit=200', {
+        const res: any = await fetchJSON('/api/postings/latest?limit=300', {
           signal: ac.signal,
         });
         console.log(res);
