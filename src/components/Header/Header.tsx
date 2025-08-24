@@ -9,7 +9,8 @@ function Header({
   type = 'main',
   text,
   onMenuClick,
-}: HeaderProps & { onMenuClick?: () => void }) {
+  hideMenu = false,
+}: HeaderProps & { onMenuClick?: () => void; hideMenu?: boolean }) {
   const navigate = useNavigate();
   const goHome = () => navigate('/');
 
@@ -35,9 +36,11 @@ function Header({
             </S.MainIcon>
             <S.TitleText>{text ?? '공고 상세'}</S.TitleText>
           </S.DetailTextWrapper>
-          <S.MenuIcon onClick={onMenuClick}>
-            <img src={menu} alt="" />
-          </S.MenuIcon>
+          {!hideMenu && (
+            <S.MenuIcon onClick={onMenuClick}>
+              <img src={menu} alt="" />
+            </S.MenuIcon>
+          )}
         </S.HeaderDetail>
       )}
       {type === 'chat' && (
