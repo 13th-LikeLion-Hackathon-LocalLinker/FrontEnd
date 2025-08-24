@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../../layouts/layout';
+import { useNavigate } from 'react-router-dom';
 import NoticeCard from '../../components/Card/NoticeCard';
 import Pager from '../../components/Pager/Pager';
 import FabChat from '../../components/FabChat';
@@ -226,6 +227,10 @@ function loadOnboardingFilters(): {
 }
 
 export default function CategoryPage() {
+  const navigate = useNavigate();
+  const handleCardClick = (id: string | number) => {
+    navigate(`/detail/${Number(id)}`);
+  };
   const [sp, setSp] = useSearchParams();
   const raw = sp.get('category');
   const cat: CategoryCode = isCategoryCode(raw)
@@ -469,7 +474,11 @@ export default function CategoryPage() {
             empty={!loading && !error && current.length === 0}
           >
             {current.map((n) => (
-              <NoticeCard key={n.id} {...n} />
+              <NoticeCard
+                key={n.id}
+                {...n}
+                onClick={() => handleCardClick(n.id)}
+              />
             ))}
           </Fallback>
         </L.List>

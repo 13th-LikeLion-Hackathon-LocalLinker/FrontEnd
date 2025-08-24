@@ -21,7 +21,7 @@ export const HeaderMain = styled(HeaderShell)`
 export const HeaderDetail = styled(HeaderShell)`
   padding: 12px 16px;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 `;
 
 export const HeaderChat = styled(HeaderShell)`

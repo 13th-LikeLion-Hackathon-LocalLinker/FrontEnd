@@ -36,7 +36,7 @@ function Header({
             <S.MainIcon onClick={goHome} style={{ cursor: 'pointer' }}>
               <ArrowLeft style={{ color: 'white' }} />
             </S.MainIcon>
-            <S.TitleText>{text ?? '상세 페이지'}</S.TitleText>
+            <S.TitleText>{text ?? '공고 상세'}</S.TitleText>
           </S.DetailTextWrapper>
           <S.MenuIcon onClick={onMenuClick}>
             <img src={menu} alt="" />
