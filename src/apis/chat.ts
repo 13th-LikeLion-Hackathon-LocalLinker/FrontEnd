@@ -14,11 +14,11 @@ export const sendChatMessage = async (query: string) => {
     localStorage.getItem('onboardingInfo') || '{}',
   );
   const language = getNationalityCode(onboardingInfo.nationality);
-
   const payload: ChatRequest = { query, language };
 
   try {
-    const response = await api.post<ChatResponse>('/api/chat/ask', payload);
+    const response = await api.post<ChatResponse>('/api/chatbot/ask', payload);
+    console.log(response);
     return response.data.answer;
   } catch (error) {
     console.error(error);

@@ -3,14 +3,14 @@ import * as S from './Header.styles';
 import { useNavigate } from 'react-router-dom';
 import type { HeaderProps } from './Header.types';
 import menu from '../../assets/icons/menu.svg';
-import { ReactComponent as ArrowDropdown } from '../../assets/icons/dropdown_arrow.svg';
 import { ReactComponent as ArrowLeft } from '../../assets/icons/arrow_left.svg';
 
 function Header({
   type = 'main',
   text,
   onMenuClick,
-}: HeaderProps & { onMenuClick?: () => void }) {
+  hideMenu = false,
+}: HeaderProps & { onMenuClick?: () => void; hideMenu?: boolean }) {
   const navigate = useNavigate();
   const goHome = () => navigate('/');
 
@@ -20,9 +20,7 @@ function Header({
         <S.HeaderMain>
           <S.MainTextWrapper>
             <S.TitleText>천안시</S.TitleText>
-            <S.MainIcon>
-              <ArrowDropdown style={{ color: 'white' }} />
-            </S.MainIcon>
+            <S.MainIcon></S.MainIcon>
           </S.MainTextWrapper>
           <S.MenuIcon onClick={onMenuClick}>
             <img src={menu} alt="" />
@@ -38,9 +36,11 @@ function Header({
             </S.MainIcon>
             <S.TitleText>{text ?? '공고 상세'}</S.TitleText>
           </S.DetailTextWrapper>
-          <S.MenuIcon onClick={onMenuClick}>
-            <img src={menu} alt="" />
-          </S.MenuIcon>
+          {!hideMenu && (
+            <S.MenuIcon onClick={onMenuClick}>
+              <img src={menu} alt="" />
+            </S.MenuIcon>
+          )}
         </S.HeaderDetail>
       )}
       {type === 'chat' && (

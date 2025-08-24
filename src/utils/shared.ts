@@ -13,3 +13,8 @@ export function buildQS(params: Record<string, unknown>) {
   });
   return qs.toString();
 }
+export function normalizeCategoryParam(c?: string) {
+  if (!c) return c;
+  // 서버가 기대하는 코드로 교정 (오탈자 방지)
+  return c === 'ADMINSTRATION' ? 'ADMINISTRATION' : c;
+}

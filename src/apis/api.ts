@@ -4,7 +4,14 @@ export async function fetchJSON<T>(
   init?: RequestInit,
 ): Promise<T> {
   const res = await fetch(input, {
-    headers: { Accept: 'application/json', ...(init?.headers || {}) },
+    // 캐시/서비스워커 영향 차단
+    cache: 'no-store',
+    headers: {
+      Accept: 'application/json',
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+      Pragma: 'no-cache',
+      ...(init?.headers || {}),
+    },
     ...init,
   });
 
@@ -25,19 +32,5 @@ export async function fetchJSON<T>(
   } catch (e) {
     console.error('[API PARSE ERROR]', String(input), e);
     throw e;
-  }
-}
-/** 서버 실패 시 목업을 반환. usedMock 플래그로 구분 가능 */
-export async function fetchJSONOrMock<T>(
-  input: RequestInfo | URL,
-  init: RequestInit | undefined,
-  mock: T,
-): Promise<{ data: T; usedMock: boolean }> {
-  try {
-    const data = await fetchJSON<T>(input, init);
-    return { data, usedMock: false };
-  } catch (e) {
-    console.warn('[API FALLBACK -> MOCK]', String(input), e);
-    return { data: mock, usedMock: true };
   }
 }

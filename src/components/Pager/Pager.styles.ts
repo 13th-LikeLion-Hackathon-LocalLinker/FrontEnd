@@ -1,23 +1,28 @@
 import styled from '@emotion/styled';
 
 export const Pager = styled.nav`
-  width: 334px;
+  width: 100%;
+  max-width: 300px;
   height: 24px;
   margin: 16px auto 70px;
   display: grid;
-  grid-template-columns: 24px 1fr 24px;
+  grid-template-columns: 20px 1fr 20px;
+  gap: 12px;
   align-items: center;
+  justify-items: center;
 `;
 
 export const IconButton = styled.button`
-  width: 24px;
-  height: 24px;
-  display: grid;
-  place-items: center;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
+  flex-shrink: 0;
 
   &:disabled {
     opacity: 0.32;
@@ -26,8 +31,8 @@ export const IconButton = styled.button`
 
   img,
   svg {
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
   }
 `;
 
@@ -35,7 +40,7 @@ export const PageList = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 24px; /* 간격을 16px에서 24px로 증가 */
   color: #616462;
   font-size: 14px;
   line-height: 24px;
@@ -46,7 +51,7 @@ export const PageItem = styled.button<{ active?: boolean }>`
   display: inline-block;
   border: 0;
   background: transparent;
-  padding: 0;
+  padding: 4px 8px; /* 클릭 영역 확보를 위한 패딩 추가 */
   cursor: pointer;
 
   color: ${({ active }) => (active ? '#0A0B0D' : '#616462')};
