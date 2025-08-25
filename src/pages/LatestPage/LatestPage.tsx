@@ -57,7 +57,6 @@ export default function LatestPage({
     [list, sortKey],
   );
 
-
   const [page, setPage] = React.useState(1);
   const total = sorted.length;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -142,7 +141,11 @@ export default function LatestPage({
             emptyText="공고가 아직 없습니다."
           >
             {current.map((n) => (
-              <NoticeCard key={n.id} {...n} />
+              <NoticeCard
+                key={n.id}
+                {...n}
+                onClick={() => handleCardClick(n.id)}
+              />
             ))}
           </Fallback>
         </L.ListSection>
