@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const BannerContainer = styled.div`
+export const BannerContainer = styled.div`
   box-sizing: border-box;
   width: 90%;
   height: 143px;
@@ -21,7 +21,7 @@ const BannerContainer = styled.div`
   background: #f4fbf5;
 `;
 
-const Title = styled.div`
+export const Title = styled.div`
   width: 100%;
   color: ${({ theme }) => theme.colors.primary.base};
   font-weight: 700;
@@ -29,31 +29,39 @@ const Title = styled.div`
   line-height: 21px;
 `;
 
-const Body = styled.div`
+export const Body = styled.div`
   width: 100%;
   color: #8ed498;
   font-size: 14px;
   line-height: 18px;
 `;
 
-const Button = styled.div`
+/* 🔧 div → button (Emotion은 .attrs 없음 → TSX에서 type="button" 지정) */
+export const Button = styled.button`
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 4px;
+
   color: ${({ theme }) => theme.colors.primary.base};
   font-size: 14px;
   font-weight: 500;
   line-height: 14px;
 
   cursor: pointer;
+
   img {
     width: 20px;
     height: 20px;
   }
 `;
 
-const BellIcon = styled.div`
+export const BellIcon = styled.div`
   display: flex;
   position: absolute;
   width: 80px;
@@ -61,4 +69,3 @@ const BellIcon = styled.div`
   right: 35px;
   aspect-ratio: 1/1;
 `;
-export { BannerContainer, Title, Body, Button, BellIcon };
