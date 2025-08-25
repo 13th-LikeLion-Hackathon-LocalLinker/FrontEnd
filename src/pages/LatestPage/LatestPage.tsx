@@ -47,6 +47,7 @@ export default function LatestPage({
   const active = personalOnly ? onboarding : applied;
 
   const visaParam = toVisaParam(active.visa); // 서버엔 비자만 전달
+
   const { list, loading, error } = useLatest(pageSize, maxPages, {
     visa: visaParam,
   });
@@ -55,6 +56,7 @@ export default function LatestPage({
     () => sortNotices(list, sortKey),
     [list, sortKey],
   );
+
 
   const [page, setPage] = React.useState(1);
   const total = sorted.length;
