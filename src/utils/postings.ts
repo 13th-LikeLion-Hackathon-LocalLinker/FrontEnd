@@ -29,7 +29,8 @@ export const unpack = (res: any) => {
     return {
       items: res.postings as BackendNotice[],
       hasNext: !!res.hasNext,
-      totalPages: typeof res.totalPages === 'number' ? res.totalPages : undefined,
+      totalPages:
+        typeof res.totalPages === 'number' ? res.totalPages : undefined,
     };
   }
   if (Array.isArray(res)) return { items: res as BackendNotice[] };

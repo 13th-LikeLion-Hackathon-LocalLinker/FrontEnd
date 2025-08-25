@@ -8,7 +8,11 @@ type LatestFilters = {
   visa?: string; // D_2 / E_7 … (언더스코어). nation/married 제외(UI-only)
 };
 
-export function useLatest(pageSize = 200, maxPages = 50, filters?: LatestFilters) {
+export function useLatest(
+  pageSize = 200,
+  maxPages = 50,
+  filters?: LatestFilters,
+) {
   const [list, setList] = React.useState<Notice[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);

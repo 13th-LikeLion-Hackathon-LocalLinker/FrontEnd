@@ -24,19 +24,35 @@ const toVisaParam = (visaValue?: string): string | undefined => {
   return n.trim().toUpperCase().replace(/-/g, '_').replace(/\s+/g, '');
 };
 
-export default function LatestPage({ pageSize = 200, maxPages = 50 }: LatestPageProps) {
+export default function LatestPage({
+  pageSize = 200,
+  maxPages = 50,
+}: LatestPageProps) {
   const [sortKey, setSortKey] = React.useState<SortKey>('due');
   const [personalOnly, setPersonalOnly] = React.useState(true);
-  const [pending, setPending] = React.useState<FilterFormState>({ visa: '', nation: '', married: '' });
-  const [applied, setApplied] = React.useState<FilterFormState>({ visa: '', nation: '', married: '' });
+  const [pending, setPending] = React.useState<FilterFormState>({
+    visa: '',
+    nation: '',
+    married: '',
+  });
+  const [applied, setApplied] = React.useState<FilterFormState>({
+    visa: '',
+    nation: '',
+    married: '',
+  });
 
   const onboarding = loadOnboardingFilters(); // { visa, nation, married }
   const active = personalOnly ? onboarding : applied;
 
   const visaParam = toVisaParam(active.visa); // 서버엔 비자만 전달
-  const { list, loading, error } = useLatest(pageSize, maxPages, { visa: visaParam });
+  const { list, loading, error } = useLatest(pageSize, maxPages, {
+    visa: visaParam,
+  });
 
-  const sorted = React.useMemo(() => sortNotices(list, sortKey), [list, sortKey]);
+  const sorted = React.useMemo(
+    () => sortNotices(list, sortKey),
+    [list, sortKey],
+  );
 
   const [page, setPage] = React.useState(1);
   const total = sorted.length;
@@ -79,7 +95,10 @@ export default function LatestPage({ pageSize = 200, maxPages = 50 }: LatestPage
       </L.CountSection>
 
       <L.Controls>
-        <PersonSwitch personalOnly={personalOnly} onSwitchPerson={togglePersonal} />
+        <PersonSwitch
+          personalOnly={personalOnly}
+          onSwitchPerson={togglePersonal}
+        />
         <SortButtons
           sortKey={sortKey}
           onChangeSort={(k) => {
@@ -93,7 +112,7 @@ export default function LatestPage({ pageSize = 200, maxPages = 50 }: LatestPage
         <L.FilterWrap>
           <FilterPanel
             visa={pending.visa}
-            nation={pending.nation}   // UI-only
+            nation={pending.nation} // UI-only
             married={pending.married} // UI-only
             onChange={(patch) => setPending((f) => ({ ...f, ...patch }))}
             onReset={resetFilters}
@@ -105,7 +124,12 @@ export default function LatestPage({ pageSize = 200, maxPages = 50 }: LatestPage
       )}
 
       <L.ListSection>
-        <Fallback loading={loading} error={error} empty={isEmptyAll} emptyText="공고가 아직 없습니다.">
+        <Fallback
+          loading={loading}
+          error={error}
+          empty={isEmptyAll}
+          emptyText="공고가 아직 없습니다."
+        >
           {current.map((n) => (
             <NoticeCard key={n.id} {...n} />
           ))}
