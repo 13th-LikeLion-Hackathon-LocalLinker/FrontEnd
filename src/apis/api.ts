@@ -1,10 +1,10 @@
-// src/lib/api.ts
+import { withBase } from './config';
+
 export async function fetchJSON<T>(
   input: RequestInfo | URL,
   init?: RequestInit,
 ): Promise<T> {
-  const res = await fetch(input, {
-    // 캐시/서비스워커 영향 차단
+  const res = await fetch(withBase(input) as RequestInfo, {
     cache: 'no-store',
     headers: {
       Accept: 'application/json',

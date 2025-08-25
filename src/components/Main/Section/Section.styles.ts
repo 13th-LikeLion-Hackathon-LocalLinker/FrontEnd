@@ -9,9 +9,9 @@ export const Head = styled.div`
 `;
 
 export const Title = styled.h2`
-  margin: 0;
+  margin-left: 6px;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
 `;
 
 export const Add = styled.button`

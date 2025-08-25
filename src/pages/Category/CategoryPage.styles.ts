@@ -9,11 +9,13 @@ export const Wrap = styled.div`
 export const CountBar = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between; /* 건수 | 에러 좌우 배치 */
+  justify-content: space-between;
   gap: 8px;
   color: #6b7280;
-  font-size: 12px;
-  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 700px
+  margin-bottom: 20px;
+  margin-left: 6px;
 `;
 
 export const Controls = styled.div`

@@ -1,18 +1,14 @@
-// 마감 임박 페이지
-
 import React from 'react';
 import Layout from '../../layouts/layout';
 import Pager from '../../components/Pager/Pager';
 import NoticeCard from '../../components/Card/NoticeCard';
 import { useDue } from '../../hooks/useDue';
 import Fallback from '../../components/common/Fallback';
-import { useNavigate } from 'react-router-dom';
 
 const PAGE_SIZE = 6;
 
 export default function DuePage() {
-  const navigate = useNavigate();
-  const { list: notices, loading, error } = useDue(200, 50, false);
+  const { list: notices, loading, error } = useDue(200, 50);
   const [page, setPage] = React.useState(1);
 
   const total = notices.length;
@@ -20,9 +16,20 @@ export default function DuePage() {
   const start = (page - 1) * PAGE_SIZE;
   const current = notices.slice(start, start + PAGE_SIZE);
 
-  const handleCardClick = (id: string | number) => {
-    navigate(`/detail/${Number(id)}`);
-  };
+  // 데이터(리스트)가 바뀌면 페이지를 1로 리셋해서 빈 화면 방지
+  React.useEffect(() => {
+    setPage(1);
+  }, [total]);
+
+  React.useEffect(() => {
+    console.log('[closing-soon][page]', {
+      total,
+      page,
+      pageSize: PAGE_SIZE,
+      showing: current.length,
+      currentIds: current.map((n) => n.id),
+    });
+  }, [total, page, current]);
 
   return (
     <Layout headerProps={{ type: 'detail', text: '마감 임박 공고' }}>
@@ -33,11 +40,7 @@ export default function DuePage() {
           empty={!loading && !error && current.length === 0}
         >
           {current.map((n) => (
-            <NoticeCard
-              key={n.id}
-              {...n}
-              onClick={() => handleCardClick(n.id)}
-            />
+            <NoticeCard key={n.id} {...n} />
           ))}
         </Fallback>
       </section>
