@@ -1,5 +1,4 @@
 import api from './index';
-import { getNationalityCode } from '../utils/nationality';
 
 interface ChatRequest {
   query: string;
@@ -13,8 +12,7 @@ export const sendChatMessage = async (query: string) => {
   const onboardingInfo = JSON.parse(
     localStorage.getItem('onboardingInfo') || '{}',
   );
-  const language = getNationalityCode(onboardingInfo.nationality);
-  const payload: ChatRequest = { query, language };
+  const payload: ChatRequest = { query, language: onboardingInfo.nation };
 
   try {
     const response = await api.post<ChatResponse>('/api/chatbot/ask', payload);
