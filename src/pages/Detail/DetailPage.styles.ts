@@ -7,6 +7,7 @@ const DetailContainer = styled.div`
   flex-direction: column;
 
   padding: 18px 20px;
+  padding-top: 70px;
   gap: 16px;
 `;
 

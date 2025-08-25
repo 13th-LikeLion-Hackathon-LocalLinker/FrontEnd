@@ -25,12 +25,12 @@ export const getPostingDetail = async (
   const onboardingInfo = JSON.parse(
     localStorage.getItem('onboardingInfo') || '{}',
   );
-  console.log(onboardingInfo.nationality);
+  console.log(onboardingInfo.nation);
 
   try {
     const response = await api.get<PostingResponse>(
       `/api/postings/${postingId}`,
-      { params: { language: onboardingInfo.nationality } },
+      { params: { language: onboardingInfo.nation } },
     );
     if (response.data) return response.data;
     return null; // null 반환
