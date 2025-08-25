@@ -1,5 +1,8 @@
 import styled from '@emotion/styled';
 
+export const Container = styled.div`
+  padding-top: 50px;
+`;
 export const CountSection = styled.section`
   padding: 24px 20px;
 `;

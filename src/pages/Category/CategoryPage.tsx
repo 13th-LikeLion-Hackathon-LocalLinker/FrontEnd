@@ -198,9 +198,13 @@ export default function CategoryPage() {
       headerProps={{ type: 'detail', text: CATEGORY_LABELS[cat] }}
     >
       <div id="top-anchor" />
-      <CategoryTabs active={cat} order={CATEGORY_ORDER} onChange={goCategory} />
-
       <L.Wrap>
+        <CategoryTabs
+          active={cat}
+          order={CATEGORY_ORDER}
+          onChange={goCategory}
+        />
+
         <L.CountBar>
           <b style={{ color: '#111827' }}>
             전체 <span style={{ color: '#0FB050' }}>{total}</span>건

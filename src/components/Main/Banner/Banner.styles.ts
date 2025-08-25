@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 const BannerContainer = styled.div`
   box-sizing: border-box;
-  width: 334px;
+  width: 90%;
   height: 143px;
   margin: 0 auto;
   margin-bottom: 14px;
