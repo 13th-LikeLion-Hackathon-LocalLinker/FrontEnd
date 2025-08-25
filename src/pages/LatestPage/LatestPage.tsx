@@ -15,6 +15,7 @@ import { loadOnboardingFilters } from '../../utils/onboarding';
 import { normalizeVisa } from '../../utils/shared';
 import type { FilterFormState, LatestPageProps } from './LatestPage.types';
 import * as L from './LatestPage.styles';
+import { useNavigate } from 'react-router-dom';
 
 const PAGE_SIZE = 6;
 
@@ -24,19 +25,36 @@ const toVisaParam = (visaValue?: string): string | undefined => {
   return n.trim().toUpperCase().replace(/-/g, '_').replace(/\s+/g, '');
 };
 
-export default function LatestPage({ pageSize = 200, maxPages = 50 }: LatestPageProps) {
+export default function LatestPage({
+  pageSize = 200,
+  maxPages = 50,
+}: LatestPageProps) {
+  const navigate = useNavigate();
   const [sortKey, setSortKey] = React.useState<SortKey>('due');
   const [personalOnly, setPersonalOnly] = React.useState(true);
-  const [pending, setPending] = React.useState<FilterFormState>({ visa: '', nation: '', married: '' });
-  const [applied, setApplied] = React.useState<FilterFormState>({ visa: '', nation: '', married: '' });
+  const [pending, setPending] = React.useState<FilterFormState>({
+    visa: '',
+    nation: '',
+    married: '',
+  });
+  const [applied, setApplied] = React.useState<FilterFormState>({
+    visa: '',
+    nation: '',
+    married: '',
+  });
 
   const onboarding = loadOnboardingFilters(); // { visa, nation, married }
   const active = personalOnly ? onboarding : applied;
 
   const visaParam = toVisaParam(active.visa); // 서버엔 비자만 전달
-  const { list, loading, error } = useLatest(pageSize, maxPages, { visa: visaParam });
+  const { list, loading, error } = useLatest(pageSize, maxPages, {
+    visa: visaParam,
+  });
 
-  const sorted = React.useMemo(() => sortNotices(list, sortKey), [list, sortKey]);
+  const sorted = React.useMemo(
+    () => sortNotices(list, sortKey),
+    [list, sortKey],
+  );
 
   const [page, setPage] = React.useState(1);
   const total = sorted.length;
@@ -66,11 +84,14 @@ export default function LatestPage({ pageSize = 200, maxPages = 50 }: LatestPage
     setPage(1);
   }, [applied]);
 
+  const handleCardClick = (id: string | number) => {
+    navigate(`/detail/${Number(id)}`);
+  };
+
   const isEmptyAll = !loading && !error && total === 0;
 
   return (
     <Layout headerProps={{ type: 'detail', text: '최신 공고' }}>
-
       <L.Container>
         {/* 상단 카운트 */}
         <L.CountSection>
@@ -130,54 +151,6 @@ export default function LatestPage({ pageSize = 200, maxPages = 50 }: LatestPage
           </div>
         )}
       </L.Container>
-
-      <div id="latest-top" />
-
-      <L.CountSection>
-        <L.CountText>
-          전체 <span className="total">{total}</span>건
-        </L.CountText>
-      </L.CountSection>
-
-      <L.Controls>
-        <PersonSwitch personalOnly={personalOnly} onSwitchPerson={togglePersonal} />
-        <SortButtons
-          sortKey={sortKey}
-          onChangeSort={(k) => {
-            setSortKey(k);
-            setPage(1);
-          }}
-        />
-      </L.Controls>
-
-      {!personalOnly && (
-        <L.FilterWrap>
-          <FilterPanel
-            visa={pending.visa}
-            nation={pending.nation}   // UI-only
-            married={pending.married} // UI-only
-            onChange={(patch) => setPending((f) => ({ ...f, ...patch }))}
-            onReset={resetFilters}
-            onSubmit={applyFilters}
-            visaOptions={VISA_OPTIONS}
-            nationalities={NATIONALITIES}
-          />
-        </L.FilterWrap>
-      )}
-
-      <L.ListSection>
-        <Fallback loading={loading} error={error} empty={isEmptyAll} emptyText="공고가 아직 없습니다.">
-          {current.map((n) => (
-            <NoticeCard key={n.id} {...n} />
-          ))}
-        </Fallback>
-      </L.ListSection>
-
-      {!loading && !error && totalPages > 1 && (
-        <div style={{ padding: '8px 0 16px' }}>
-          <Pager page={page} totalPages={totalPages} onChange={setPage} />
-        </div>
-      )}
     </Layout>
   );
 }

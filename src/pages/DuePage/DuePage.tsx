@@ -4,10 +4,13 @@ import Pager from '../../components/Pager/Pager';
 import NoticeCard from '../../components/Card/NoticeCard';
 import { useDue } from '../../hooks/useDue';
 import Fallback from '../../components/common/Fallback';
+import { useNavigate } from 'react-router-dom';
 
 const PAGE_SIZE = 6;
 
 export default function DuePage() {
+  const navigate = useNavigate();
+
   const { list: notices, loading, error } = useDue(200, 50);
   const [page, setPage] = React.useState(1);
 
@@ -31,15 +34,19 @@ export default function DuePage() {
     });
   }, [total, page, current]);
 
+  const handleCardClick = (id: string | number) => {
+    navigate(`/detail/${Number(id)}`);
+  };
+
   return (
     <Layout headerProps={{ type: 'detail', text: '마감 임박 공고' }}>
       <section
         style={{
-          paddingTop: '67px',
           display: 'flex',
           flexDirection: 'column',
           gap: '8px',
           padding: '16px',
+          paddingTop: '67px',
         }}
       >
         <Fallback
@@ -48,7 +55,11 @@ export default function DuePage() {
           empty={!loading && !error && current.length === 0}
         >
           {current.map((n) => (
-            <NoticeCard key={n.id} {...n} />
+            <NoticeCard
+              key={n.id}
+              {...n}
+              onClick={() => handleCardClick(n.id)}
+            />
           ))}
         </Fallback>
       </section>
