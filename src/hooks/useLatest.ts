@@ -14,6 +14,12 @@ const CATS: CategoryCode[] = [
 ];
 const LANGS = ['KO', 'EN', 'UZ', 'JA', 'ZH', 'TH', 'VI'] as const;
 
+// ✅ 외부에서 넘길 필터: nation은 제외(UI-only)
+type LatestFilters = {
+  visa?: string;       // 서버가 기대하는 포맷으로 넘겨주세요 (예: D2, E9, F2 ...)
+  married?: boolean;   // true / false
+};
+
 const unpack = (res: any) => {
   if (Array.isArray(res)) return { items: res as BackendNotice[] };
   if (Array.isArray(res?.postings))
@@ -44,6 +50,7 @@ async function collectCategoryAll(
   cat: CategoryCode,
   pageSize: number,
   maxPages: number,
+  filters?: LatestFilters,           // ✅ 필터 추가
 ) {
   const byId = new Map<number, BackendNotice>();
   for (const lang of LANGS) {
@@ -52,7 +59,15 @@ async function collectCategoryAll(
       let r: any;
       try {
         r = await fetchJSON(
-          `/api/postings/category?${qs({ category: cat, size: pageSize, page, language: lang })}`,
+          `/api/postings/category?${qs({
+            category: cat,
+            size: pageSize,
+            page,
+            language: lang,
+            // ✅ 비자/결혼여부만 서버로 전달
+            visa: filters?.visa,
+            married: filters?.married,
+          })}`,
         );
       } catch {
         break;
@@ -60,19 +75,22 @@ async function collectCategoryAll(
       const { items, hasNext, totalPages } = unpack(r);
       if (!items.length) break;
       items.forEach((n) => byId.set(n.id, n));
+
+      // ✅ 서버가 요청당 50개로 캡해도 다음 페이지 시도 가능하도록
       if (
         hasNext === false ||
-        (typeof totalPages === 'number' && page + 1 >= totalPages) ||
-        items.length < pageSize
-      )
+        (typeof totalPages === 'number' && page + 1 >= totalPages)
+      ) {
         break;
+      }
       page += 1;
     }
   }
   return Array.from(byId.values());
 }
 
-export function useLatest(pageSize = 200, maxPages = 50) {
+// ✅ filters 인자를 받도록 수정
+export function useLatest(pageSize = 200, maxPages = 50, filters?: LatestFilters) {
   const [list, setList] = React.useState<Notice[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
@@ -87,7 +105,7 @@ export function useLatest(pageSize = 200, maxPages = 50) {
       try {
         const all = new Map<number, BackendNotice>();
         for (const cat of CATS) {
-          const chunk = await collectCategoryAll(cat, pageSize, maxPages);
+          const chunk = await collectCategoryAll(cat, pageSize, maxPages, filters);
           chunk.forEach((n) => all.set(n.id, n));
           if (!cancelled) {
             const sorted = Array.from(all.values()).sort(
@@ -109,7 +127,8 @@ export function useLatest(pageSize = 200, maxPages = 50) {
     return () => {
       cancelled = true;
     };
-  }, [pageSize, maxPages]);
+    // ✅ 비자/결혼여부가 바뀌면 재조회
+  }, [pageSize, maxPages, filters?.visa, filters?.married]);
 
   return { list, loading, error };
 }

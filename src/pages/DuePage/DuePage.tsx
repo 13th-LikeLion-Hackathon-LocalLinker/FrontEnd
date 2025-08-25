@@ -1,5 +1,3 @@
-// 마감 임박 페이지
-
 import React from 'react';
 import Layout from '../../layouts/layout';
 import Pager from '../../components/Pager/Pager';
@@ -10,13 +8,28 @@ import Fallback from '../../components/common/Fallback';
 const PAGE_SIZE = 6;
 
 export default function DuePage() {
-  const { list: notices, loading, error } = useDue(200, 50, false);
+  const { list: notices, loading, error } = useDue(200, 50);
   const [page, setPage] = React.useState(1);
 
   const total = notices.length;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const start = (page - 1) * PAGE_SIZE;
   const current = notices.slice(start, start + PAGE_SIZE);
+
+  // 데이터(리스트)가 바뀌면 페이지를 1로 리셋해서 빈 화면 방지
+  React.useEffect(() => {
+    setPage(1);
+  }, [total]);
+
+  React.useEffect(() => {
+    console.log('[closing-soon][page]', {
+      total,
+      page,
+      pageSize: PAGE_SIZE,
+      showing: current.length,
+      currentIds: current.map((n) => n.id),
+    });
+  }, [total, page, current]);
 
   return (
     <Layout headerProps={{ type: 'detail', text: '마감 임박 공고' }}>

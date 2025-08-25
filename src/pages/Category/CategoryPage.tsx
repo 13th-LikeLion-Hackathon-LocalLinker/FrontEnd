@@ -202,7 +202,9 @@ export default function CategoryPage() {
 
       <L.Wrap>
         <L.CountBar>
-          <b style={{ color: '#111827' }}>전체 {total}건</b>
+          <b style={{ color: '#111827' }}>
+            전체 <span style={{ color: '#0FB050' }}>{total}</span>건
+          </b>
           {error && (
             <span style={{ color: 'crimson', marginLeft: 8 }}>
               에러: {error}
