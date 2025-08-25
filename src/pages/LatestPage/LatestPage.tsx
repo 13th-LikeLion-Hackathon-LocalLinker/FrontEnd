@@ -52,7 +52,8 @@ export default function LatestPage({
 
   // 서버로 넘길 실제 파라미터(국적은 제외)
   const visaParam = toVisaParam(active.visa);
-  const marriedParam = active.married === '' ? undefined : active.married === 'true';
+  const marriedParam =
+    active.married === '' ? undefined : active.married === 'true';
 
   // visa/married만 서버 필터로 전달 (카테고리 기준 없음)
   const { list, loading, error } = useLatest(pageSize, maxPages, {
@@ -61,7 +62,10 @@ export default function LatestPage({
   });
 
   // 정렬 적용
-  const sorted = React.useMemo(() => sortNotices(list, sortKey), [list, sortKey]);
+  const sorted = React.useMemo(
+    () => sortNotices(list, sortKey),
+    [list, sortKey],
+  );
 
   // 페이지네이션
   const [page, setPage] = React.useState(1);
@@ -100,7 +104,10 @@ export default function LatestPage({
 
       {/* 컨트롤 바 */}
       <L.Controls>
-        <PersonSwitch personalOnly={personalOnly} onSwitchPerson={togglePersonal} />
+        <PersonSwitch
+          personalOnly={personalOnly}
+          onSwitchPerson={togglePersonal}
+        />
         <SortButtons
           sortKey={sortKey}
           onChangeSort={(k) => {
@@ -115,7 +122,7 @@ export default function LatestPage({
         <L.FilterWrap>
           <FilterPanel
             visa={pending.visa}
-            nation={pending.nation}   // UI-only
+            nation={pending.nation} // UI-only
             married={pending.married}
             onChange={(patch) => setPending((f) => ({ ...f, ...patch }))}
             onReset={resetFilters}

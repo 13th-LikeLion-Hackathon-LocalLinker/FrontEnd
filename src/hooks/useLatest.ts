@@ -16,8 +16,8 @@ const LANGS = ['KO', 'EN', 'UZ', 'JA', 'ZH', 'TH', 'VI'] as const;
 
 // ✅ 외부에서 넘길 필터: nation은 제외(UI-only)
 type LatestFilters = {
-  visa?: string;       // 서버가 기대하는 포맷으로 넘겨주세요 (예: D2, E9, F2 ...)
-  married?: boolean;   // true / false
+  visa?: string; // 서버가 기대하는 포맷으로 넘겨주세요 (예: D2, E9, F2 ...)
+  married?: boolean; // true / false
 };
 
 const unpack = (res: any) => {
@@ -50,7 +50,7 @@ async function collectCategoryAll(
   cat: CategoryCode,
   pageSize: number,
   maxPages: number,
-  filters?: LatestFilters,           // ✅ 필터 추가
+  filters?: LatestFilters, // ✅ 필터 추가
 ) {
   const byId = new Map<number, BackendNotice>();
   for (const lang of LANGS) {
@@ -90,7 +90,11 @@ async function collectCategoryAll(
 }
 
 // ✅ filters 인자를 받도록 수정
-export function useLatest(pageSize = 200, maxPages = 50, filters?: LatestFilters) {
+export function useLatest(
+  pageSize = 200,
+  maxPages = 50,
+  filters?: LatestFilters,
+) {
   const [list, setList] = React.useState<Notice[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
@@ -105,7 +109,12 @@ export function useLatest(pageSize = 200, maxPages = 50, filters?: LatestFilters
       try {
         const all = new Map<number, BackendNotice>();
         for (const cat of CATS) {
-          const chunk = await collectCategoryAll(cat, pageSize, maxPages, filters);
+          const chunk = await collectCategoryAll(
+            cat,
+            pageSize,
+            maxPages,
+            filters,
+          );
           chunk.forEach((n) => all.set(n.id, n));
           if (!cancelled) {
             const sorted = Array.from(all.values()).sort(
