@@ -10,12 +10,18 @@ import { VISA_OPTIONS, NATIONALITIES } from '../../constants/onboardingOptions';
 function OnboardingPage({ onNext }: OnboardingPageProps) {
   const [visaType, setVisaType] = useState(VISA_OPTIONS[0].value);
   const [nationality, setNationality] = useState(NATIONALITIES[0].value);
-  const [isMarried, setIsMarried] = useState<string | null>(null);
+  const [isMarried, setIsMarried] = useState<boolean | null>(null);
 
   const handleNext = () => {
+    const marriedBoolean = isMarried === null ? undefined : isMarried;
+
     localStorage.setItem(
       'onboardingInfo',
-      JSON.stringify({ visaType, nationality, isMarried }),
+      JSON.stringify({
+        visa: visaType,
+        nation: nationality,
+        married: marriedBoolean,
+      }),
     );
     onNext();
   };
@@ -54,9 +60,9 @@ function OnboardingPage({ onNext }: OnboardingPageProps) {
               <input
                 type="radio"
                 name="isMarried"
-                value="기혼"
-                checked={isMarried === '기혼'}
-                onChange={() => setIsMarried('기혼')}
+                value="true"
+                checked={isMarried === true}
+                onChange={() => setIsMarried(true)}
               />
               기혼
             </RadioLabel>
@@ -64,9 +70,9 @@ function OnboardingPage({ onNext }: OnboardingPageProps) {
               <input
                 type="radio"
                 name="isMarried"
-                value="비혼"
-                checked={isMarried === '비혼'}
-                onChange={() => setIsMarried('비혼')}
+                value="false"
+                checked={isMarried === false}
+                onChange={() => setIsMarried(false)}
               />
               비혼
             </RadioLabel>
