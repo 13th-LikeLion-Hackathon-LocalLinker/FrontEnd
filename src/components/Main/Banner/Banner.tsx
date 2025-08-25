@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import type { BannerProps } from './Banner.types';
 
 export default function Banner({
-  title = '저장된 공고 중에 \n기간이 끝나가는 것이 있어요!',
+  title = '저장된 공고 중에\n기간이 끝나가는 것이 있어요!',
   body = '국내 정기거주 아동 교육권 보장을 위한 체류자격 부여 방안',
 }: BannerProps) {
   const navigate = useNavigate();
@@ -25,7 +25,11 @@ export default function Banner({
 
       <S.Body>{body}</S.Body>
 
-      <S.Button type="button" onClick={goBookmarked} aria-label="북마크한 공고 페이지로 이동">
+      <S.Button
+        type="button"
+        onClick={goBookmarked}
+        aria-label="북마크한 공고 페이지로 이동"
+      >
         바로가기 <img src={arrow_right_circle} alt="" />
       </S.Button>
 
