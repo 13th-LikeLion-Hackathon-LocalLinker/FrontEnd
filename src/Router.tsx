@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, createBrowserRouter, useNavigate } from 'react-router-dom';
 import Layout from './layouts/layout';
 import MainPage from './pages/Main/MainPage';
@@ -11,10 +11,24 @@ import DuePage from './pages/DuePage/DuePage';
 import BookmarkedNoticesPage from './pages/BookmarkedNotices/BookmarkedNoticesPage';
 import ChatBotPage from './pages/ChatBot/ChatBotPage';
 import DetailPage from './pages/Detail/DetailPage';
+import SplashScreenPage from './pages/SplashScreen/SplashScreenPage';
 
 const RootPage = () => {
   const navigate = useNavigate();
+  const [showSplash, setShowSplash] = useState(true);
   const onboardingDone = localStorage.getItem('onboardingDone');
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowSplash(false);
+    }, 2000); // 2초 동안 스플래시 화면 표시
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  if (showSplash) {
+    return <SplashScreenPage />;
+  }
 
   if (!onboardingDone) {
     return (
@@ -45,11 +59,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-          <>
-            <RootPage />
-          </>
-        ),
+        element: <RootPage />,
       },
       {
         path: 'service-intro',
@@ -69,7 +79,7 @@ const router = createBrowserRouter([
           <Layout
             showHeader
             showFooter
-            headerProps={{ type: 'detail', text: '개인 설정' }} // ← 여기 main → detail, text 지정
+            headerProps={{ type: 'detail', text: '개인 설정' }}
           >
             <ProfileSettingPage />
           </Layout>
