@@ -34,6 +34,7 @@ export const Inline = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-left: 100px;
 `;
 
 export const Select = styled.select`
@@ -43,6 +44,7 @@ export const Select = styled.select`
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   font-size: 13px;
+  margin-left: 90px;
   background: #f8f9f8;
   /* 고정폭을 위해 flex 속성 제거 */
 `;
