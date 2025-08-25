@@ -22,16 +22,32 @@ export default function MainPage() {
   const { bookmarkedIds, toggleBookmark } = useBookmark();
   const navigate = useNavigate();
 
+  const [search, setSearch] = React.useState('');
+
   const handleCardClick = (id: string | number) => {
     navigate(`/detail/${Number(id)}`);
   };
+
+  // 검색 필터링 (제목/부서/기간/카테고리 등 원하는 필드 추가)
+  const filteredLatest = latest.filter(
+    (n) =>
+      n.title.toLowerCase().includes(search.toLowerCase()) ||
+      (n.dept && n.dept.toLowerCase().includes(search.toLowerCase())) ||
+      (n.category && n.category.toLowerCase().includes(search.toLowerCase())),
+  );
+  const filteredDue = due.filter(
+    (n) =>
+      n.title.toLowerCase().includes(search.toLowerCase()) ||
+      (n.dept && n.dept.toLowerCase().includes(search.toLowerCase())) ||
+      (n.category && n.category.toLowerCase().includes(search.toLowerCase())),
+  );
 
   return (
     <S.Stage>
       <S.Page>
         <S.Content>
           <div id="top" />
-          <SearchBar />
+          <SearchBar value={search} onChange={setSearch} />
           <Banner />
           <QuickActions />
 
@@ -40,9 +56,11 @@ export default function MainPage() {
             <Fallback
               loading={lLoading}
               error={lError}
-              empty={!lLoading && !lError && latest.slice(0, 3).length === 0}
+              empty={
+                !lLoading && !lError && filteredLatest.slice(0, 3).length === 0
+              }
             >
-              {latest.slice(0, 3).map((n) => (
+              {filteredLatest.slice(0, 3).map((n) => (
                 <NoticeCard
                   key={n.id}
                   {...n}
@@ -59,9 +77,11 @@ export default function MainPage() {
             <Fallback
               loading={dLoading}
               error={dError}
-              empty={!dLoading && !dError && due.slice(0, 3).length === 0}
+              empty={
+                !dLoading && !dError && filteredDue.slice(0, 3).length === 0
+              }
             >
-              {due.slice(0, 3).map((n) => (
+              {filteredDue.slice(0, 3).map((n) => (
                 <NoticeCard
                   key={n.id}
                   {...n}
