@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const StyledSelect = styled.select`
-  width: 334px;
+  width: 100%;
   height: 40px;
   margin-bottom: 40px;
   border-radius: 4px;

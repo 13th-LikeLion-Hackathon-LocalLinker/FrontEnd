@@ -4,14 +4,14 @@ export const Stage = styled.div`
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  padding: 20px 20px 0 20px;
+  padding: 70px 20px 0 20px;
   background: #f4f6f4;
   display: flex;
   justify-content: center;
 `;
 
 export const Page = styled.div`
-  width: 375px;
+  width: 100%;
   height: auto;
   margin: 0 auto;
   display: flex;
@@ -41,7 +41,7 @@ export const Content = styled.main`
 `;
 
 export const Box = styled.div`
-  width: 334px;
+  width: 100%;
   height: 68px;
   border-radius: 4px;
   border: 1px solid var(--surface-container4, #e9ece9);
@@ -53,7 +53,7 @@ export const Box = styled.div`
 `;
 
 export const Divider = styled.div`
-  width: 340px;
+  width: 100%;
   height: 0px;
   border: 0.8px solid #e2e6e2;
   opacity: 1;
