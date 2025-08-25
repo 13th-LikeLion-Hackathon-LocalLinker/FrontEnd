@@ -7,35 +7,47 @@ import { useParams } from 'react-router-dom';
 import { useBookmark } from '../../hooks/useBookmark';
 import { getPostingDetail } from '../../apis/detail';
 
+const formatDate = (dateString: string) => {
+  const d = new Date(dateString);
+  const yy = String(d.getFullYear()).slice(2); // 뒤 2자리
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yy}.${mm}.${dd}`;
+};
+
 function DetailPage() {
   const { id } = useParams<{ id: string }>();
   const { bookmarkedIds, toggleBookmark } = useBookmark();
   const isBookmarked = id ? bookmarkedIds.includes(id) : false;
-  // const [detailData, setDetailData] = React.useState<DetailPageProps | null>(
-  //   null,
-  // );
+  const [detailData, setDetailData] = React.useState<DetailPageProps | null>(
+    null,
+  );
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const data = await getPostingDetail(Number(id));
-  //     setDetailData(data ?? null);
-  //   };
-  //   // fetchData();
-  // }, [id]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getPostingDetail(Number(id));
+      setDetailData(data ?? null);
+    };
+    fetchData();
+  }, [id]);
 
-  // if (!detailData) {
-  //   return <div>불러오기 실패</div>;
-  // }
+  if (!detailData) {
+    return <div>loading...</div>;
+  }
 
   return (
     <S.DetailContainer>
       <S.DetailHeader>
-        <S.DetailCategory>카테고리 없음</S.DetailCategory>
-        <S.DetailTitle>제목 없음</S.DetailTitle>
+        <S.DetailCategory>{detailData.category}</S.DetailCategory>
+        <S.DetailTitle>{detailData.title}</S.DetailTitle>
         <S.DetailInfo>
-          <S.DetailTarget>대상 | 모두</S.DetailTarget>
+          <S.DetailTarget>대상 | {detailData.eligibility}</S.DetailTarget>
           <S.DetailPeriod>
-            기간 | 상시
+            기간 |{' '}
+            {detailData.applyStartAt
+              ? formatDate(detailData.applyStartAt)
+              : '-'}{' '}
+            ~ {detailData.applyEndAt ? formatDate(detailData.applyEndAt) : '-'}
             <img
               src={isBookmarked ? bookmarketFill : bookmarket}
               alt="북마크"
@@ -45,7 +57,7 @@ function DetailPage() {
           </S.DetailPeriod>
         </S.DetailInfo>
       </S.DetailHeader>
-      <S.DetailBody>detai</S.DetailBody>
+      <S.DetailBody>{detailData.detail}</S.DetailBody>
     </S.DetailContainer>
   );
 }

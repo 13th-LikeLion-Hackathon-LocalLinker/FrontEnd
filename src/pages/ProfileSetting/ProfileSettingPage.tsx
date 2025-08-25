@@ -3,34 +3,44 @@ import * as S from './ProfileSettingPage.styles';
 import Label from '../../components/Onboarding/Label/Label';
 import RadioLabel from '../../components/Onboarding/RadioLabel/RadioLabel';
 import Select from '../../components/Onboarding/Select/Select';
-import { VISA_OPTIONS, NATIONALITIES } from '../../constants/onboardingOptions'; // 외부 상수 임포트
+import { VISA_OPTIONS, NATIONALITIES } from '../../constants/onboardingOptions';
 
 function ProfileSettingPage() {
   const [visaType, setVisaType] = useState(VISA_OPTIONS[0].value);
   const [nationality, setNationality] = useState(NATIONALITIES[0].value);
-  const [isMarried, setIsMarried] = useState<string | null>(null);
+  // 결혼 여부 boolean | null로 관리
+  const [isMarried, setIsMarried] = useState<boolean | null>(null);
 
   useEffect(() => {
     const info = localStorage.getItem('onboardingInfo');
     if (info) {
       const parsed = JSON.parse(info);
-      setVisaType(parsed.visaType || VISA_OPTIONS[0].value);
-      setNationality(parsed.nationality || NATIONALITIES[0].value);
-      setIsMarried(parsed.isMarried ?? null);
+      setVisaType(parsed.visa ?? VISA_OPTIONS[0].value);
+      setNationality(parsed.nation ?? NATIONALITIES[0].value);
+      // married 값이 boolean인지 문자열인지 체크 후 boolean으로 변환
+      if (parsed.married === true || parsed.married === false) {
+        setIsMarried(parsed.married);
+      } else if (parsed.married === 'true') {
+        setIsMarried(true);
+      } else if (parsed.married === 'false') {
+        setIsMarried(false);
+      } else {
+        setIsMarried(null);
+      }
     }
   }, []);
 
   const saveToLocalStorage = (
     newVisaType: string,
     newNationality: string,
-    newIsMarried: string | null,
+    newIsMarried: boolean | null,
   ) => {
     localStorage.setItem(
       'onboardingInfo',
       JSON.stringify({
-        visaType: newVisaType,
-        nationality: newNationality,
-        isMarried: newIsMarried,
+        visa: newVisaType,
+        nation: newNationality,
+        married: newIsMarried,
       }),
     );
   };
@@ -45,7 +55,7 @@ function ProfileSettingPage() {
     saveToLocalStorage(visaType, value, isMarried);
   };
 
-  const onChangeIsMarried = (value: string) => {
+  const onChangeIsMarried = (value: boolean) => {
     setIsMarried(value);
     saveToLocalStorage(visaType, nationality, value);
   };
@@ -84,9 +94,9 @@ function ProfileSettingPage() {
               <input
                 type="radio"
                 name="isMarried"
-                value="기혼"
-                checked={isMarried === '기혼'}
-                onChange={() => onChangeIsMarried('기혼')}
+                value="true"
+                checked={isMarried === true}
+                onChange={() => onChangeIsMarried(true)}
               />
               기혼
             </RadioLabel>
@@ -94,9 +104,9 @@ function ProfileSettingPage() {
               <input
                 type="radio"
                 name="isMarried"
-                value="비혼"
-                checked={isMarried === '비혼'}
-                onChange={() => onChangeIsMarried('비혼')}
+                value="false"
+                checked={isMarried === false}
+                onChange={() => onChangeIsMarried(false)}
               />
               비혼
             </RadioLabel>

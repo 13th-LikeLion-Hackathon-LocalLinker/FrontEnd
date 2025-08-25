@@ -1,5 +1,4 @@
 import api from './index';
-import { getNationalityCode } from '../utils/nationality';
 
 interface PostingResponse {
   id: number;
@@ -26,12 +25,12 @@ export const getPostingDetail = async (
   const onboardingInfo = JSON.parse(
     localStorage.getItem('onboardingInfo') || '{}',
   );
-  const language = getNationalityCode(onboardingInfo.nationality);
+  console.log(onboardingInfo.nationality);
 
   try {
     const response = await api.get<PostingResponse>(
       `/api/postings/${postingId}`,
-      { params: { language } },
+      { params: { language: onboardingInfo.nationality } },
     );
     if (response.data) return response.data;
     return null; // null 반환
