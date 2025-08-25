@@ -1,5 +1,5 @@
-interface BannerProps {
-  title: string;
-}
-
-export type { BannerProps };
+// src/components/Banner/Banner.types.ts
+export type BannerProps = {
+  title?: string;
+  body?: string;
+};
