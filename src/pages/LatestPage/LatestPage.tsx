@@ -70,6 +70,67 @@ export default function LatestPage({ pageSize = 200, maxPages = 50 }: LatestPage
 
   return (
     <Layout headerProps={{ type: 'detail', text: '최신 공고' }}>
+
+      <L.Container>
+        {/* 상단 카운트 */}
+        <L.CountSection>
+          <L.CountText>
+            전체 <span className="total">{total}</span>건
+          </L.CountText>
+        </L.CountSection>
+
+        {/* 컨트롤 바 */}
+        <L.Controls>
+          <PersonSwitch
+            personalOnly={personalOnly}
+            onSwitchPerson={togglePersonal}
+          />
+          <SortButtons
+            sortKey={sortKey}
+            onChangeSort={(k) => {
+              setSortKey(k);
+              setPage(1);
+            }}
+          />
+        </L.Controls>
+
+        {/* 개인맞춤 OFF일 때만 필터 노출 (국적은 UI-only) */}
+        {!personalOnly && (
+          <L.FilterWrap>
+            <FilterPanel
+              visa={pending.visa}
+              nation={pending.nation} // UI-only
+              married={pending.married}
+              onChange={(patch) => setPending((f) => ({ ...f, ...patch }))}
+              onReset={resetFilters}
+              onSubmit={applyFilters}
+              visaOptions={VISA_OPTIONS}
+              nationalities={NATIONALITIES}
+            />
+          </L.FilterWrap>
+        )}
+
+        {/* 리스트 */}
+        <L.ListSection>
+          <Fallback
+            loading={loading}
+            error={error}
+            empty={!loading && !error && current.length === 0}
+            emptyText="공고가 아직 없습니다."
+          >
+            {current.map((n) => (
+              <NoticeCard key={n.id} {...n} />
+            ))}
+          </Fallback>
+        </L.ListSection>
+
+        {!loading && !error && totalPages > 1 && (
+          <div style={{ padding: '8px 0 16px' }}>
+            <Pager page={page} totalPages={totalPages} onChange={setPage} />
+          </div>
+        )}
+      </L.Container>
+
       <div id="latest-top" />
 
       <L.CountSection>

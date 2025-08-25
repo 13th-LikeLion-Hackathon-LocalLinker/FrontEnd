@@ -8,11 +8,12 @@ export const Stage = styled.div`
   background: transparent;
   display: flex;
   justify-content: center;
+  padding-top: 56px;
 `;
 
 /* 실제 프레임: 가로만 375 고정, 세로는 유동 */
 export const Page = styled.div`
-  width: 375px;
+  width: 100%;
   min-height: 100vh;
   height: auto;
   margin: 0 auto;
@@ -28,5 +29,4 @@ export const Content = styled.main`
   display: block;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding-bottom: 100px; //여기 푸터랑 간격임
 `;

@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const Card = styled.article`
-  width: 335px;
+  width: 100%;
+  max-width: 450px;
   height: 134px;
   padding: 10px 16px 16px 16px; /* 내부 303에 맞춤 */
   border: 1px solid #e5e7eb;
@@ -9,13 +10,12 @@ export const Card = styled.article`
   background: #ffffff;
   position: relative;
   display: flex;
-  margin-left: 4px;
   flex-direction: column;
   row-gap: 12px;
 `;
 
 export const Inner = styled.div`
-  width: 303px; /* 내부 컨테이너 폭 */
+  width: 100%; /* 내부 컨테이너 폭 */
 `;
 
 /* 카테고리/타입, 우측 북마크 */

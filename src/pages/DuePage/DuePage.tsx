@@ -33,7 +33,15 @@ export default function DuePage() {
 
   return (
     <Layout headerProps={{ type: 'detail', text: '마감 임박 공고' }}>
-      <section style={{ display: 'grid', gap: 12, padding: '16px' }}>
+      <section
+        style={{
+          paddingTop: '67px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '8px',
+          padding: '16px',
+        }}
+      >
         <Fallback
           loading={loading}
           error={error}

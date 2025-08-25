@@ -2,8 +2,8 @@
 import styled from '@emotion/styled';
 
 export const Card = styled.div`
-  width: 335px; /* 패널 고정 너비 */
-  margin: 8px 4px 10px; /* 레이아웃에 맞게 여백 유지 */
+  width: 100%; /* 패널 고정 너비 */
+  margin: 8px 4px 10px 0; /* 레이아웃에 맞게 여백 유지 */
   padding: 14px 12px;
   background: #ffffff;
   box-shadow:

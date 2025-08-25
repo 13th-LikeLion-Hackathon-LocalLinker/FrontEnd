@@ -4,7 +4,8 @@ export const Pager = styled.nav`
   width: 100%;
   max-width: 300px;
   height: 24px;
-  margin: 16px auto 70px;
+  margin: 0 auto;
+  margin-top: 14px;
   display: grid;
   grid-template-columns: 20px 1fr 20px;
   gap: 12px;

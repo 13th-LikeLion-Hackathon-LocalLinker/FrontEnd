@@ -4,13 +4,14 @@ export const Stage = styled.div`
   width: 100%;
   margin: 0 auto;
   padding: 0;
+  padding-top: 50px;
   background: transparent;
   display: flex;
   justify-content: center;
 `;
 
 export const Page = styled.div`
-  width: 375px;
+  width: 100%;
   min-height: 100vh;
   height: auto;
   margin: 0 auto;

@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
 
-const HeaderShell = styled.header`
-  position: sticky;
+const HeaderShell = styled.div`
+  position: fixed;
   top: 0;
   z-index: 1000;
-  width: 375px;
+  width: 100%;
+  max-width: 450px;
   height: 56px;
   margin: 0 auto;
   box-sizing: border-box;
