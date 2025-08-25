@@ -3,6 +3,8 @@ import styled from 'styled-components';
 export const Tabs = styled.div`
   overflow-x: auto;
   overflow-y: hidden;
+  display: flex;
+  align-items: center;
   padding: 12px 16px 0;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;

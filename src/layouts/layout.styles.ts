@@ -10,7 +10,8 @@ export const PageWrapper = styled.div`
 `;
 
 export const Frame = styled.div`
-  width: 375px;
+  width: 100%;
+  max-width: 450px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

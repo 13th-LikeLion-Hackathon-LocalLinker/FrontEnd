@@ -3,7 +3,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 const StyledLine = styled.div`
-  width: 340px;
+  width: 90%;
   height: 0px;
   margin-top: 16px;
   margin-bottom: 8px;

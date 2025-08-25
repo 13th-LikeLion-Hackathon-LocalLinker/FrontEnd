@@ -8,6 +8,10 @@ export const ChatImg = styled.img`
   height: 60px;
   cursor: pointer;
   user-select: none;
+
+  @media (min-width: 400px) {
+    left: calc(50% + 140px);
+  }
 `;
 
 export const TopImg = styled.img`
@@ -18,4 +22,8 @@ export const TopImg = styled.img`
   height: 60px;
   cursor: pointer;
   user-select: none;
+
+  @media (min-width: 400px) {
+    left: calc(50% + 140px);
+  }
 `;

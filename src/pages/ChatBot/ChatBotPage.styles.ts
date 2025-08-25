@@ -4,6 +4,7 @@ const ChatBotPageContainer = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
+  padding-top: 56px;
   flex-direction: column;
 `;
 
@@ -33,7 +34,7 @@ const ChatMessage = styled.div<{ sender: 'user' | 'bot' }>`
 
 const ChatOptions = styled.div`
   position: fixed;
-  max-width: 375px;
+  max-width: 450px;
   bottom: 0;
   padding: 14px 20px;
   background-color: ${({ theme }) => theme.colors.surface.variant};

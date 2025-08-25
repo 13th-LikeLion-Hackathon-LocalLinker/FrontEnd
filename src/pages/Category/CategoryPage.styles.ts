@@ -2,8 +2,10 @@
 import styled from '@emotion/styled';
 
 export const Wrap = styled.div`
+  width: 100%;
   padding: 12px 16px 24px;
-  background: transparent; /* 기존 'ackground' 오타 수정 */
+  padding-top: 57px;
+  background: transparent;
 `;
 
 export const CountBar = styled.div`
@@ -26,6 +28,7 @@ export const Controls = styled.div`
 `;
 
 export const List = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 `;
